@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "",
+  "usingComponents": {
+    "bottom-input": "/components/bottom-input/bottom-input",
+    "comment-list": "/pages/home/cpns/comment-list"
+  }
+}
