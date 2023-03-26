@@ -1,0 +1,46 @@
+/* 灰色 */
+	$zy-classic-grey: #e9e9e9;
+	$zy-disabled-grey: #f5f5f5;
+	$zy-dark-grey: #999999;
+
+	.zy_tag_container {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+
+	.zy_tag {
+		border: 1rpx solid $zy-classic-grey;
+		margin: 5rpx 8rpx;
+		padding: 5rpx 15rpx;
+		min-width: 60rpx;
+	}
+
+	.zy_tag_item {
+		display: flex;
+		margin: auto;
+	}
+
+	.zy_tag_item_img {
+		width: 50rpx;
+		height: 50rpx;
+	}
+
+	.iconfont {
+		color: $zy-dark-grey;
+		cursor: pointer;
+	}
+
+	.zy_tag_add {
+		width: 150rpx;
+		padding: 5rpx 15rpx;
+		margin: 5rpx 8rpx;
+		border: 1rpx solid $zy-classic-grey;
+		border-radius: 10rpx;
+		text-align: center;
+	}
+
+	.zy_tag_add_input {
+		margin: auto;
+		width: 150rpx;
+	}

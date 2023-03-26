@@ -38,7 +38,7 @@
 					<news-topic-nav :list="topicList.topic"></news-topic-nav>
 					<!-- 最近更新 -->
 					<view class="last-update">
-						<view class="last-update-name">最近更新</view>
+						<view class="last-update-name">热门话题</view>
 						<!-- <topic-list :item="item" v-for="(item,index) in topicList.list" :key="index"></topic-list> -->
 					</view>
 				</scroll-view>

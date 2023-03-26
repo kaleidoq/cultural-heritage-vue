@@ -33,7 +33,11 @@ export const updateUserInfo = (options) => {
 	})
 }
 
-// 修改关注信息 关注的取关 未关注的关注
+
+/**
+ * 修改关注信息 关注的取关 未关注的关注
+ * @param(id,flag)
+ */
 export const setFollow = async (options) => {
 	// let flag = await getFollow()
 	// console.log(flag)
@@ -45,13 +49,34 @@ export const setFollow = async (options) => {
 	})
 }
 
+/**
+ * 获得用户头像昵称和简介
+ * @param(user_id)
+ * @returns(nickname,head,introduce)
+ */
+export const getUserIntro = (id) => {
+	return request({
+		url: baseAPI + '/getUserIntro',
+		method: 'GET',
+		data: {
+			user_id: id
+		}
+	})
+}
 
-// 获得用户数据
-export const getUserInfo = (options) => {
+
+/**
+ *  获得用户数据
+ * @param (user_id)
+ * @returns (全部用户信息邮箱电话等)
+ */
+export const getUserInfo = (id) => {
 	return request({
 		url: baseAPI + '/getUserInfo',
 		method: 'GET',
-		data: options
+		data: {
+			user_id: id
+		}
 	})
 }
 
@@ -117,5 +142,17 @@ export const getCollection = () => {
 	return request({
 		url: baseAPI + '/getCollection',
 		method: 'GET'
+	})
+}
+
+
+// 删除帖子（实际不删除，设置idDel=1
+export const delectArticle = (id) => {
+	return request({
+		url: baseAPI + '/delectArticle',
+		method: 'DELETE',
+		data: {
+			article_id: id
+		}
 	})
 }

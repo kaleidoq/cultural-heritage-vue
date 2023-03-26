@@ -64,7 +64,7 @@
 				# {{item}}</view>
 		</view>
 		<!-- 点赞、收藏 -->
-		<view class="flex flex-row justify-end items-center text-gray-500 mt-15">
+		<view v-if="isShowSpace" class="flex flex-row justify-end items-center text-gray-500 mt-15">
 			<view class="flex flex-row justify-center items-center mr-20">
 				<view v-if="info.is_like" class="cuIcon-likefill mr-10 text-36" @click.stop="handleLike(false)">
 				</view>
@@ -83,6 +83,7 @@
 				{{info.comment_count|fileThousand}}
 			</view>
 		</view>
+		<slot name="bottom"></slot>
 	</view>
 </template>
 
@@ -124,6 +125,10 @@
 				type: Boolean,
 				default: true
 			},
+			isShowSpace: {
+				type: Boolean,
+				default: true
+			},
 			isShowFollow: {
 				type: Boolean,
 				default: true
@@ -147,7 +152,7 @@
 		methods: {
 			async init() {
 				this.tags = splitTag(this.info.tags)
-				console.log(this.tags)
+				// console.log(this.tags)
 			},
 			// 关注
 			async follow(value) {
@@ -171,25 +176,6 @@
 					icon: 'none',
 				})
 			},
-			// 表情处理
-			/* handleIcon(type, item = null) {
-				if (!item) return
-				let index = item.index
-				if (type === 'smile') {
-					if (index === 1) {
-						return 'active,icondianzan'
-					} else {
-						return 'iconthumbsup'
-					}
-				}
-				// else {
-				// 	if (index === 2) {
-				// 		return 'active,iconz-nolikeFill'
-				// 	} else {
-				// 		return 'iconz-nolike'
-				// 	}
-				// }
-			}, */
 			// 为文章点赞
 			async handleLike(value) {
 				const data = await putLike(this.info.article_id, value)
@@ -220,7 +206,7 @@
 			goDetail() {
 				if (this.isDetail) return // 详情页，不跳转
 				this.$u.route('pages/home/detail', {
-					data: JSON.stringify(this.info)
+					article_id: JSON.stringify(this.info.article_id)
 				})
 			}
 		}

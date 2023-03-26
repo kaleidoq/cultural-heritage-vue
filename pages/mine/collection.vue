@@ -8,7 +8,8 @@
 				{{todo.time}}
 			</view>
 			<view class="flex flex-row flex-wrap">
-				<view v-for="(item,index) in todo.subList" :key="index" class="overflow-hidden flex mx-10 my-5">
+				<view v-for="(item,index) in todo.subList" :key="index" class="overflow-hidden flex mx-10 my-5"
+					@click="goDetail(item.article_id)">
 					<image v-if="item.cover_pic" class="flex content" :src="item.cover_pic" mode="aspectFill">
 					</image>
 					<view v-else class="flex flex-col p-12 bg-gray-100 content">
@@ -102,7 +103,7 @@
 						newArr[index].subList.push(item);
 					}
 					this.Data = newArr
-					console.log(newArr)
+					// console.log(newArr)
 				})
 			},
 			// 滚动触发
@@ -132,6 +133,15 @@
 					this.getList()
 				}, 1000);
 			},
+			// 去详情页
+			goDetail(id) {
+				if (this.isDetail) return // 详情页，不跳转
+				this.$u.route('pages/home/detail', {
+					article_id: JSON.stringify(id)
+				})
+
+
+			}
 		}
 	}
 </script>

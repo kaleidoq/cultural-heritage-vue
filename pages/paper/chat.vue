@@ -54,7 +54,7 @@
 		onLoad(e) {
 			console.log(e)
 			this.anothUser.user_id = e.user_id
-			this.mainUser.head = uni.getStorageSync("head")
+			// this.mainUser.head = uni.getStorageSync("head")
 			// 设置scrollHeight
 			uni.getSystemInfo({
 				success: (res) => {
@@ -68,14 +68,14 @@
 		// 页面加载完成
 		onReady() {
 			// 滚动到底部
-			// this.scrollToBottom()
+			this.scrollToBottom()
 		},
 		methods: {
 			// 初始化
 			init() {
 				this.getUserChatInfo()
 				this.getChatList()
-				this.scrollToBottom()
+				// this.scrollToBottom()
 			},
 			// 获得用户昵称头像
 			async getUserChatInfo() {

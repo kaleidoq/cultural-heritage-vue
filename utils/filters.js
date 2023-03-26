@@ -35,6 +35,14 @@ export function gettime(shorttime) {
 	}
 }
 
+// 完整时间
+export function formatTime(shorttime) {
+	shorttime = new Date(shorttime).getTime()
+	shorttime = shorttime.toString().length < 13 ?
+		shorttime * 1000 : shorttime;
+	// 显示完整日期 + 时间
+	return dateFormat(new Date(shorttime), "{Y}-{MM}-{DD} {A} {t}:{ii}");
+}
 
 //获得精确到天的方法
 export function getDate(date) {

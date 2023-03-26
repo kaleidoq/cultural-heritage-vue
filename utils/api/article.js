@@ -130,3 +130,37 @@ export const putCollect = (id, flag) => {
 		}
 	})
 }
+
+
+
+/**
+ *  修改文章的喜欢
+ * @param(提交表单)
+ * @method(post)
+ */
+export const addArticle = (form) => {
+	return request({
+		url: baseAPI + '/addArticle',
+		method: 'POST',
+		data: form
+	})
+}
+
+
+/**
+ *  修改文章的喜欢
+ * @param(class_id,length)
+ * @method(get)
+ */
+export const getClassifyArticleCover = (class_id, length) => {
+	return request({
+		url: baseAPI + '/getClassifyArticleCover',
+		method: 'GET',
+		data: {
+			// class_id: class_id,
+			// length: length
+			class_id,
+			length
+		}
+	})
+}

@@ -10,33 +10,89 @@
 				</view>
 			</view> -->
 		</u-navbar>
-		<view class="wrap-card">
-			<!-- 文本域 -->
-			<view class="text-gray-500 my-20">
-				想说点啥
-			</view>
-			<u-textarea v-model="textContent" maxlength='100' height="100" placeholder="随便说点儿什么吧..." count
-				confirmType="done">
-			</u-textarea>
-			<!-- 上传多图 -->
-			<view class="text-gray-500 my-20">
-				分享图片
-			</view>
-			<u-upload ref="upload" :fileList="imgList" @afterRead="handUpload" @delete="deletePic" name="1" multiple
-				:maxCount="9" previewFullImage>
-			</u-upload>
-		</view>
+
 		<!-- 底部操作栏 -->
 		<view class="bottom-handle">
-			<view class="iconfont iconcaidan text-50 mx-10 animate__animated" hover-class="animate__jello"></view>
-			<view class="iconfont iconhuati text-50 mx-10 animate__animated" hover-class="animate__jello"></view>
+			<!-- 
 			<view class="iconfont icontupian text-50 mx-10 animate__animated" hover-class="animate__jello"
-				@click="handleBottom('upload')"></view>
+				@click="handleBottom('upload')"></view> -->
 			<view class="ml-auto mr-20">
 				<u-button text="发布" color="linear-gradient(to right, #dcc20b, #01906c)"
 					:customStyle="{width:'150rpx',height:'60rpx'}" @click="submit"></u-button>
+
 			</view>
 		</view>
+		<form @submit="submit" @reset="">
+			<!-- 标题 -->
+			<view class="cu-form-group margin-top">
+				<view class="title">标题</view>
+				<input v-model="form.title" class="uni-input" maxlength="20" placeholder="起一个引人注目的标题吧"></input>
+			</view>
+			<!-- end -->
+
+			<!-- 内容 -->
+			<view class="cu-form-group margin-top">
+				<textarea v-model="form.content" maxlength='-1' height="100" placeholder="告诉大家你是怎么制作的吧..."
+					confirmType="done"></textarea>
+			</view>
+			<!-- end -->
+
+			<!-- 图片 -->
+			<view class="cu-bar bg-white margin-top">
+				<view class="action">
+					图片上传
+				</view>
+				<view class="action">
+					{{imgList.length}}/9
+				</view>
+			</view>
+			<view class="cu-form-group">
+				<view class="grid col-4 grid-square flex-sub">
+					<u-upload ref="upload" :fileList="imgList" @afterRead="handUpload" @delete="deletePic" name="1"
+						multiple :maxCount="9" previewFullImage>
+					</u-upload>
+
+				</view>
+			</view>
+			<!-- end -->
+
+			<!-- 选择分类  -->
+			<view class="cu-form-group" @click="showPicker=true">
+				<view class="title">分类:</view>
+				<u-picker :show="showPicker" ref="uPicker" :columns="columns" keyName="class_name"
+					@confirm="confirmPicker" @change="changePicker">
+				</u-picker>
+				<view class="title">
+					{{classify}}
+				</view>
+				<text class="title cuIcon-right"></text>
+			</view>
+			<!-- end -->
+
+			<!-- 添加标签  -->
+			<view class="cu-form-group">
+				<view class="title">标签</view>
+				<view class="tag_container">
+					<zyTag ref="zyAddTag" type="info" v-for="(item,index) in tagList" :text="'# '+item +' x'" closable
+						@delete="deleteTag(item)" />
+					<view class="zy_tag_add">
+						<input :focus="focus" placeholder="+ New Tag" class="zy_tag_add_input" v-model="addValue"
+							@confirm="confirmTag" />
+					</view>
+				</view>
+
+			</view>
+			<!-- end -->
+
+
+			<!-- 确定发布 -->
+			<view class="padding flex flex-direction">
+				<!-- <button class="cu-btn bg-green margin-tb-sm lg" form-type="submit">确定发布</button> -->
+			</view>
+			<!-- end -->
+		</form>
+
+
 		<!-- 中间弹出公告栏 -->
 		<u-popup :show="popupShow" round="20" mode="center" :customStyle="{width:'80%'}">
 			<view class="flex flex-col justify-center items-center m-20">
@@ -64,12 +120,21 @@
 		uploadPic
 	} from "@/utils/api/picture.js"
 	import {
+		getClassify
+	} from "@/utils/api/news.js"
+	import {
+		addArticle
+	} from "@/utils/api/article.js"
+	import {
 		pathToBase64
 	} from 'image-tools'
+	import zyTag from '@/uni_modules/zy-tag/components/zy-tag/zy-tag.vue'
 	export default {
+		components: {
+			zyTag
+		},
 		data() {
 			return {
-				textContent: '',
 				// 操作菜单
 				actionCurrent: '所有人可见',
 				actionDesc: '请设置您本条信息的访问权限',
@@ -84,10 +149,14 @@
 					},
 				],
 				actionShow: false,
+				tagList: [],
+				focus: false,
+				addValue: '',
 				// 图片列表
 				imgList: [],
+				images: [],
 				// 弹窗公告
-				popupShow: true,
+				popupShow: false,
 				// 按钮配置
 				btnStyle: {
 					width: "450rpx",
@@ -99,8 +168,22 @@
 				// 草稿箱提示
 				draftShow: true,
 				form: {
-					imgs: ''
-				}
+					title: 'Ceshi ',
+					content: 'scascascasc',
+					images: '',
+					cover_pic: null,
+					class_id: -1,
+					tags: null
+				},
+				showPicker: false,
+				columns: [],
+				classify: '',
+				// region: {
+				// 	label: "",
+				// 	value: [0, 0, 0]
+				// }
+				// columnData: [
+				// ],
 			}
 		},
 		// 监听返回按钮
@@ -120,8 +203,81 @@
 					this.imgList = data.imgList
 				}
 			})
+			this.getClassify()
 		},
 		methods: {
+			async getClassify() {
+				const {
+					data: res
+				} = await getClassify()
+				this.columns.push(res)
+				this.columns.push(res[0].children)
+				// console.log(res)
+			},
+			//添加标签input框回车事件
+			confirmTag() {
+				this.tagList.push(this.addValue)
+				this.addValue = ''
+			},
+			showCity() {
+				this.showCity = true
+				this.$refs.cityPicker.show()
+			},
+			// 修改城市
+			confirmCity(e) {
+				this.region = e;
+				// this.cityPickerValue = e.value;
+				console.log('e', e)
+				this.showCity = false
+				// this.$refs.cityPicker
+				// this.form.address = e.label
+			},
+			onBackPress() {
+				if (this.$refs.cityPicker.showPicker) {
+					this.$refs.cityPicker.pickerCancel();
+					return true;
+				}
+			},
+			onUnload() {
+				if (this.$refs.cityPicker.showPicker) {
+					this.$refs.cityPicker.pickerCancel()
+				}
+			},
+			// 选择器改变时
+			changePicker(e) {
+				console.log(e)
+				const {
+					columnIndex,
+					value,
+					values, // values为当前变化列的数组内容
+					index,
+					// 微信小程序无法将picker实例传出来，只能通过ref操作
+					picker = this.$refs.uPicker
+				} = e
+				// 当第一列值发生变化时，变化第二列(后一列)对应的选项
+				if (columnIndex === 0) {
+					// picker为选择器this实例，变化第二列对应的选项
+					console.log(e)
+					console.log(this.columns)
+					picker.setColumnValues(1, this.columns[0][index].children)
+				}
+			},
+			// 回调参数为包含columnIndex、value、values
+			confirmPicker(e) {
+				console.log('confirm', e)
+				this.form.class_id = e.value[1].class_id
+				this.classify = e.value[0].class_name + '   ' + e.value[1].class_name
+				this.showPicker = false
+			},
+			//删除标签
+			deleteTag(item) {
+				// 2种删除方式
+				this.tagList.splice(this.tagList.indexOf(item), 1);
+				// this.tagDeleteList = this.tagDeleteList.filter((o) => {
+				// 	return o !== item
+				// })
+			},
+
 			// 提示保存为草稿
 			tipDraft() {
 				uni.showModal({
@@ -152,12 +308,54 @@
 			},
 			// 提交
 			submit() {
+				if (this.images != '') {
+					this.form.images = this.images.join(',')
+					this.form.cover_pic = this.images[0]
+				}
+				this.form.tags = this.tagList.join('|')
+				if (this.form.title == '') {
+					// this.
+					uni.showToast({
+						title: '标题是大家知道你文章的重点噢，请输入标题',
+						icon: 'none'
+					})
+					return
+				} else if (this.form.content == '' && this.form.images == '') {
+					uni.showToast({
+						title: '正文和图片请至少一个有内容噢',
+						icon: 'none'
+					})
+					return
+				}
+				// else if(this.form.class_id==-1){
+				// 	uni.showToast({
+				// 		title: '不选择分类的话会',
+				// 		icon: 'none'
+				// 	})
+				// }
 				this.draftShow = false
 				console.log(this.form)
-				console.log(this.imgList)
-				// this.$u.route({
-				// 	type: 'navigateBack'
-				// })
+				// 提交到后台
+				this.addArticle()
+				uni.showToast({
+					title: '发布成功！',
+					icon: 'none'
+				})
+				setTimeout(() => {
+					uni.navigateBack({
+						delta: 1,
+						animationType: 'pop-out',
+						animationDuration: 200
+					});
+				}, 1000)
+
+			},
+			// 上传文章信息
+			async addArticle() {
+				const {
+					data: res
+				} = await addArticle(this.form)
+				console.log(res)
 			},
 			// 选择访问
 			changeAction() {
@@ -174,75 +372,99 @@
 			},
 			// 删除图片
 			deletePic(event) {
+				this.images.splice(event.index, 1)
 				this.imgList.splice(event.index, 1)
 			},
 			// 自动上传
-			// async autoUpload(event) {
-			// 	// 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
-			// 	let chooseList = [].concat(event.file) // 当前选中列表
-			// 	let fileListLen = this.imgList.length // 原始文件列表
-			// 	// 将选中的文件添加到文件列表
-			// 	chooseList.map((item) => {
-			// 		this.imgList.push({
-			// 			...item,
-			// 			status: 'uploading',
-			// 			message: '上传中'
-			// 		})
-			// 	})
-			// 	// 遍历选中的文件依次上传
-			// 	for (let i = 0; i < chooseList.length; i++) {
-			// 		// 上传成功后返回数据
-			// 		const url = await this.uploadFilePromise(chooseList[i].url)
-			// 		// 获取当前文件信息：原始文件列表长度，就是当前新增开始的索引
-			// 		let item = this.imgList[fileListLen]
-			// 		// 改变最后一个文件信息：状态、url
-			// 		this.imgList.splice(fileListLen, 1, Object.assign(item, {
-			// 			status: 'success',
-			// 			message: '',
-			// 			url
-			// 		}))
-			// 		// 文件索引后移一位
-			// 		fileListLen++
-			// 	}
-			// },
+			/* async autoUpload(event) {
+				// 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
+				let chooseList = [].concat(event.file) // 当前选中列表
+				let fileListLen = this.imgList.length // 原始文件列表
+				// 将选中的文件添加到文件列表
+				chooseList.map((item) => {
+					this.imgList.push({
+						...item,
+						status: 'uploading',
+						message: '上传中'
+					})
+				})
+				// 遍历选中的文件依次上传
+				for (let i = 0; i < chooseList.length; i++) {
+					// 上传成功后返回数据
+					const url = await this.uploadFilePromise(chooseList[i].url)
+					// 获取当前文件信息：原始文件列表长度，就是当前新增开始的索引
+					let item = this.imgList[fileListLen]
+					// 改变最后一个文件信息：状态、url
+					this.imgList.splice(fileListLen, 1, Object.assign(item, {
+						status: 'success',
+						message: '',
+						url
+					}))
+					// 文件索引后移一位
+					fileListLen++
+				}
+			}, */
 			// 手动上传
 			async handUpload(event) {
 				// 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
-				let chooseList = [].concat(event.file) // 当前选中列表
-				let fileListLen = this.imgList.length // 原始文件列表长度
-				// 将选中的文件添加到文件列表
-				chooseList.map((item, index) => {
-					// this.imgList.push({
-					// 	...item,
-					// 	status: '',
-					// 	message: ''
-					// })
-					this.imgList.push(item.url)
-					console.log(this.imgList)
-					this.handUploadSubmit(index)
+				// let chooseList = [].concat(event.file) // 当前选中列表
+				console.log('event', event)
+				// console.log('chooseList', chooseList)
+				// let fileListLen = this.imgList.length // 原始文件列表长度
+				// // 将选中的文件添加到文件列表
+				// chooseList.map((item, index) => {
+				// 	// this.imgList.push({
+				// 	// 	...item,
+				// 	// 	status: '',
+				// 	// 	message: ''
+				// 	// })
+				// 	this.imgList.push(item.url)
+				// 	console.log(this.imgList)
+				// 	this.handUploadSubmit(this.imgList.length - 1)
+				// })
+				let lists = [].concat(event.file)
+				console.log(this.imgList)
+				let imgListLen = this.imgList.length
+				lists.map((item) => {
+					this.imgList.push({
+						...item,
+						status: 'uploading',
+						message: '上传中'
+					})
 				})
+				for (let i = 0; i < lists.length; i++) {
+					const result = await this.handUploadSubmit(lists[i].url)
+					let item = this.imgList[imgListLen]
+					this.imgList.splice(imgListLen, 1, Object.assign(item, {
+						status: 'success',
+						message: '',
+						url: result
+					}))
+					imgListLen++
+				}
 			},
 			// 手动上传提交
-			async handUploadSubmit(index) {
+			/* async handUploadSubmit(index) {
 				if (!this.imgList.length) return uni.showToast({
 					title: '请选择文件',
 					icon: 'none'
 				})
-				// console.log(this.imgList)
-				let imgList = []
+				console.log(this.imgList)
+				// let imgList = []
 				let url = this.imgList[index]
-				// console.log(url)
+				console.log(index)
+				console.log(url) */
+			async handUploadSubmit(url) {
+				console.log(url)
 				// 上传本地文件
 				if (url.startsWith('blob')) {
 					pathToBase64(url) //图像转base64工具
 						.then(async base64 => {
 							//将文件转化为base64
 							url = await this.uploadFilePromise(base64); //同时将头像上传至数据库进行存储
-							// console.log(url)
-							this.imgList[index] = url
-							console.log(this.imgList)
-							this.form.imgs = this.imgList.join(',')
-							console.log(this.form.imgs)
+							console.log('url', url)
+							this.images.push(url)
+							console.log('this.images', this.images)
 						})
 						.catch(error => {
 							console.error(error)
@@ -292,5 +514,48 @@
 			display: flex;
 			align-items: center;
 		}
+	}
+
+	/* 白色 */
+	$zy-classic-white: #ffffff;
+
+	/* 灰色 */
+	$zy-classic-grey: #e9e9e9;
+	$zy-dark-grey: #999999;
+
+	.container {
+		width: 100%;
+		height: 100vh;
+		background-color: $zy-classic-white;
+	}
+
+	.text {
+		padding: 20rpx 0 0 20rpx;
+		font-size: 26rpx;
+		color: $zy-dark-grey;
+	}
+
+	.tag_container {
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+
+	.zy_tag_add {
+		// width: 150rpx;
+		height: 50rpx; //medium：45rpx；small：40rpx；mini：35rpx
+		padding: 5rpx 15rpx;
+		margin: 5rpx 8rpx;
+		border: 1rpx solid $zy-classic-grey;
+		border-radius: 10rpx;
+		text-align: center;
+	}
+
+	.zy_tag_add_input {
+		margin: auto;
+		width: 200rpx;
+		height: 50rpx; //medium：45rpx；small：40rpx；mini：35rpx
+		font-size: 28rpx; //medium：26rpx；small：24rpx；mini：22rpx
 	}
 </style>

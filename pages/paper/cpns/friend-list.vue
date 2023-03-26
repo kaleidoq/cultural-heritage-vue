@@ -1,6 +1,8 @@
 <template>
 	<!-- 小纸条/好友列表 -->
-	<view class="user-list p-20 flex items-center border-b border-gray-100" hover-class="bg-gray-100">
+	<view
+		class="user-list p-20 flex items-center border-b border-gray-100 animate__animated animate__fadeInLeft animate__fast"
+		hover-class="bg-gray-100">
 		<image class="user-img mr-20 rounded-full" :src="item.head" mode="aspectFill"></image>
 		<view class="flex flex-col flex-1">
 			<text class="text-30 font-bold mb-10 pt-20">{{item.nickname}}</text>
@@ -31,7 +33,7 @@
 			goChat() {
 				console.log(this.item)
 				this.$u.route('/pages/paper/chat', {
-					user_id: JSON.stringify(this.item.followed_user_id)
+					user_id: JSON.stringify(this.item.user_id)
 				})
 			}
 		}

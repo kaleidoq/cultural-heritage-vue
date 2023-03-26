@@ -55,6 +55,7 @@
 					content: content
 				})
 				console.log(res)
+
 				this.getChilComment(info.comment_id)
 			},
 			async getChilComment(id) {

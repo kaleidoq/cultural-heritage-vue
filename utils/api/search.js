@@ -25,22 +25,38 @@ export const getHotSearch = (options) => {
 
 
 // 搜索文章信息
-export const searchArticle = (options) => {
+export const searchArticle = (length, info) => {
 	return request({
 		url: baseAPI + '/searchArticle',
 		method: 'POST',
-		data: options
+		data: {
+			length: length,
+			info: info
+		}
 	})
 }
 
 
-
-
 // 搜索用户数据
-export const searchUser = (options) => {
+export const searchUser = (length, info) => {
 	return request({
 		url: baseAPI + '/searchUser',
-		method: 'GET',
-		data: options
+		method: 'POST',
+		data: {
+			length: length,
+			info: info
+		}
+	})
+}
+
+// 搜索用户数据
+export const searchTags = (length, info) => {
+	return request({
+		url: baseAPI + '/searchTags',
+		method: 'POST',
+		data: {
+			length: length,
+			info: info
+		}
 	})
 }

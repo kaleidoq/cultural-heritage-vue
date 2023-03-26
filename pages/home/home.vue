@@ -62,7 +62,8 @@
 	// 	newsList
 	// } from "@/utils/data/data.js"
 	import {
-		getArticleCover
+		getArticleCover,
+		getClassifyArticleCover
 	} from '@/utils/api/article.js'
 	import InfoList from "@/pages/home/cpns/info-list.vue"
 	export default {
@@ -78,19 +79,19 @@
 				// 标签栏
 				tabIndex: 0,
 				tablist: [{
-						name: "关注"
+						name: "首页"
 					},
 					{
-						name: "谷雨"
+						name: "非遗"
 					},
 					{
-						name: "芒种"
+						name: "手工"
 					},
 					{
-						name: "小满",
+						name: "摆件",
 					},
 					{
-						name: "霜降"
+						name: "饰品"
 					}
 				],
 				// 列表数据
@@ -108,8 +109,9 @@
 		},
 		// 监听原生标题栏按钮点击事件
 		onNavigationBarButtonTap(e) {
+			// console.log(e)
 			switch (e.index) {
-				case 1:
+				case 0:
 					this.handlePublish()
 					break;
 			}
@@ -157,7 +159,6 @@
 			},
 			// 获取列表
 			async getList(index) {
-				let length = 0
 				// console.log(this.swiperList[index])
 				// if (this.swiperList[index] == null) {
 				// 	length = 0
@@ -174,55 +175,57 @@
 							length: this.swiperNum[index]
 						})
 						list = res
-						console.log(this.swiperList[index])
-						if (this.swiperNum[index] != 0) {
-							this.swiperList[index].list = this.swiperList[index].list.concat(res)
-						} else this.swiperList.splice(index, 1, {
-							list: res
-						})
-						this.swiperNum.splice(index, 1, this.swiperNum[index] + res.length)
+						// console.log(this.swiperList[index])
+						// if (this.swiperNum[index] != 0) {
+						// 	this.swiperList[index].list = this.swiperList[index].list.concat(res)
+						// } else this.swiperList.splice(index, 1, {
+						// 	list: res
+						// })
+						// this.swiperNum.splice(index, 1, this.swiperNum[index] + res.length)
 						break;
-					case 1:
-						// 获得全部文章数据
+					default:
 						var {
 							data: res
-						} = await getArticleCover({
-							length: this.swiperNum[index]
-						})
+						} = await getClassifyArticleCover(index, this.swiperNum[index])
 						list = res
-						console.log(this.swiperList[index])
-						if (this.swiperNum[index] != 0) {
-							this.swiperList[index].list = this.swiperList[index].list.concat(res)
-						} else this.swiperList.splice(index, 1, {
-							list: res
-						})
-						this.swiperNum.splice(index, 1, this.swiperNum[index] + res.length)
-						break;
-					case 2:
-						// 获得全部文章数据
-						var {
-							data: res
-						} = await getArticleCover({
-							length: this.swiperNum[index]
-						})
-						list = res
-						console.log(this.swiperList[index])
-						if (this.swiperNum[index] != 0) {
-							this.swiperList[index].list = this.swiperList[index].list.concat(res)
-						} else this.swiperList.splice(index, 1, {
-							list: res
-						})
-						this.swiperNum.splice(index, 1, this.swiperNum[index] + res.length)
-						break;
+						// case 1:
+						// 	// 获得全部文章数据
+						// 	var {
+						// 		data: res
+						// 	} = await getClassifyArticleCover(index, this.swiperNum[index])
+						// 	list = res
+						// 	// console.log(this.swiperList[index])
+						// 	// if (this.swiperNum[index] != 0) {
+						// 	// 	this.swiperList[index].list = this.swiperList[index].list.concat(res)
+						// 	// } else this.swiperList.splice(index, 1, {
+						// 	// 	list: res
+						// 	// })
+						// 	// this.swiperNum.splice(index, 1, this.swiperNum[index] + res.length)
+						// 	break;
+						// case 2:
+						// 	// 获得全部文章数据
+						// 	var {
+						// 		data: res
+						// 	} = await getClassifyArticleCover(index, this.swiperNum[index])
+						// 	list = res
+						// 	// console.log(this.swiperList[index])
+						// 	// if (this.swiperNum[index] != 0) {
+						// 	// 	this.swiperList[index].list = this.swiperList[index].list.concat(res)
+						// 	// } else this.swiperList.splice(index, 1, {
+						// 	// 	list: res
+						// 	// })
+						// 	// this.swiperNum.splice(index, 1, this.swiperNum[index] + res.length)
+						// 	break;
 				}
+				console.log(this.swiperList[index])
+				if (this.swiperNum[index] != 0) {
+					this.swiperList[index].list = this.swiperList[index].list.concat(list)
+				} else this.swiperList.splice(index, 1, {
+					list: list
+				})
+				this.swiperNum.splice(index, 1, this.swiperNum[index] + list.length)
 				console.log(this.swiperList[index].list)
 				console.log(this.swiperList)
-				// 随机添加5条数据
-				/* for (let i = 0; i < 5; i++) {
-					let curr = this.$u.random(0, this.swiperList[index].list.length - 1)
-					let data = this.swiperList[index].list[curr]
-					this.swiperList[index].list.push(data)
-				} */
 				// 加载更多
 				if (list.length == 0) this.loadStatus.splice(this.tabIndex, 1, "nomore")
 				else
@@ -246,22 +249,22 @@
 			},
 			// 关注
 			async handleFollow(item) {
-				// const {
-				// 	data: res
-				// } = await setFollow({
-				// 	flag: value,
-				// 	follower_id: this.info.user_id
-				// })
-				// this.info.is_follow = item.value
-				// console.log(res)
-				// console.log(this.info.is_follow)
-				// this.swiperList[this.swiperIndex].list[item.index].isFollow = item.value
-				// const title = item.value ? '关注成功' : '取消成功'
-				// uni.showToast({
-				// 	title,
-				// 	icon: 'none',
-				// })
-				// this.getArticleCover()
+				/* const {
+					data: res
+				} = await setFollow({
+					flag: value,
+					follower_id: this.info.user_id
+				})
+				this.info.is_follow = item.value
+				console.log(res)
+				console.log(this.info.is_follow)
+				this.swiperList[this.swiperIndex].list[item.index].isFollow = item.value
+				const title = item.value ? '关注成功' : '取消成功'
+				uni.showToast({
+					title,
+					icon: 'none',
+				})
+				this.getArticleCover() */
 			},
 			// 表情
 			handleMark(item) {
