@@ -18459,7 +18459,7 @@ var _default =
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.fileThousand = fileThousand;exports.splitTag = splitTag;exports.gettime = gettime;exports.getDate = getDate;exports.getChatTime = getChatTime;exports.sumAge = sumAge;function fileThousand(value) {//转换喜欢的数量，上千
+Object.defineProperty(exports, "__esModule", { value: true });exports.fileThousand = fileThousand;exports.splitTag = splitTag;exports.gettime = gettime;exports.formatTime = formatTime;exports.getDate = getDate;exports.getChatTime = getChatTime;exports.sumAge = sumAge;function fileThousand(value) {//转换喜欢的数量，上千
   if (value / 10000 > 1) {
     value = (value / 10000).toFixed(1);
     return value + '万';
@@ -18496,6 +18496,14 @@ function gettime(shorttime) {
   }
 }
 
+// 完整时间
+function formatTime(shorttime) {
+  shorttime = new Date(shorttime).getTime();
+  shorttime = shorttime.toString().length < 13 ?
+  shorttime * 1000 : shorttime;
+  // 显示完整日期 + 时间
+  return dateFormat(new Date(shorttime), "{Y}-{MM}-{DD} {A} {t}:{ii}");
+}
 
 //获得精确到天的方法
 function getDate(date) {
@@ -18584,124 +18592,41 @@ function sumAge(data) {
 /* 142 */,
 /* 143 */,
 /* 144 */,
-/* 145 */
-/*!************************************************************!*\
-  !*** F:/uniapp/cultural-heritage-vue/utils/api/article.js ***!
-  \************************************************************/
+/* 145 */,
+/* 146 */
+/*!*********************************************************!*\
+  !*** F:/uniapp/cultural-heritage-vue/utils/api/news.js ***!
+  \*********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getCollectComment = exports.searchArticle = exports.submitComment = exports.getChilComment = exports.getComment = exports.getArticle = exports.getArticleCover = void 0;var _request = __webpack_require__(/*! @/utils/api/request.js */ 146);
+Object.defineProperty(exports, "__esModule", { value: true });exports.getClassify = exports.getHotClassify = void 0;var _request = __webpack_require__(/*! @/utils/api/request.js */ 147);
 
 
 
-var baseAPI = "/article";
+var baseAPI = "/news";
 
 
-// 获得全部文章信息
-var getArticleCover = function getArticleCover(options) {
+// 获得热门分类
+var getHotClassify = function getHotClassify() {
   return (0, _request.request)({
-    url: baseAPI + '/getArticleCover',
-    method: 'GET',
-    data: options });
-
-  /*
-                          const mes = await axios.get('/api/article/queryArticleList')
-                          console.log(mes)
-                          async.forEach(mes, async item => {
-                                  if (item.is_cover == 1) {
-                                      const data = await getCoverPic({ pic_id: item.cover_pic })
-                                          // console.log(data)
-                                      item.image = data[0].pic_content
-                                      console.log(item)
-                                          // JSON.parse(JSON.stringify(item.cover_pic))
-                                          // console.log(item.cover_pic)
-                                  }
-                              })
-                              // mes.forEach(async item => {
-                              //     if (item.is_cover == 1) {
-                              //         const data = await getCoverPic({ pic_id: item.cover_pic })
-                              //             // console.log(data)
-                              //         item.cover_pic = data[0].pic_content
-                              //         console.log(item)
-                              //     }
-                              // })
-                          console.log(mes)
-                          return mes
-                      
-                          console.log(mes) */
-};
-
-// 获得文章详情信息
-exports.getArticleCover = getArticleCover;var getArticle = function getArticle(options) {
-  // console.log(data, 'vcdevsdvsdv')
-  return (0, _request.request)({
-    url: baseAPI + '/getArticle',
-    method: 'GET',
-    data: options });
+    url: baseAPI + '/getHotClassify',
+    method: 'GET' });
 
 };
 
 
-// 获得文章的图片列表
-// export const getImages = (options) => {
-// 	return request({
-// 		url: '/user/getImages',
-// 		method: 'GET',
-// 		data: options
-// 	})
-// }
-
-// 获得评论信息
-exports.getArticle = getArticle;var getComment = function getComment(options) {
+// 获得分类列表
+exports.getHotClassify = getHotClassify;var getClassify = function getClassify() {
   return (0, _request.request)({
-    url: baseAPI + '/getComment',
-    method: 'GET',
-    data: options });
+    url: baseAPI + '/getClassify',
+    method: 'GET' });
 
-};
-
-// 获得子评论信息
-exports.getComment = getComment;var getChilComment = function getChilComment(options) {
-  return (0, _request.request)({
-    url: baseAPI + '/getChilComment',
-    method: 'GET',
-    data: options });
-
-};
-
-// 提交评论
-exports.getChilComment = getChilComment;var submitComment = function submitComment(options) {
-  return (0, _request.request)({
-    url: baseAPI + '/submitComment',
-    method: 'POST',
-    data: options });
-
-};
-
-
-// 搜索文章信息
-exports.submitComment = submitComment;var searchArticle = function searchArticle(options) {
-  return (0, _request.request)({
-    url: baseAPI + '/searchArticle',
-    method: 'POST',
-    data: options });
-
-};
-
-
-// 获得文章收藏评论信息
-exports.searchArticle = searchArticle;var getCollectComment = function getCollectComment(options) {
-  return (0, _request.request)({
-    url: baseAPI + '/getCollectComment',
-    method: 'GET',
-    data: options });
-
-};exports.getCollectComment = getCollectComment;
+};exports.getClassify = getClassify;
 
 /***/ }),
-/* 146 */
+/* 147 */
 /*!************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/utils/api/request.js ***!
   \************************************************************/
@@ -18712,6 +18637,7 @@ exports.searchArticle = searchArticle;var getCollectComment = function getCollec
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.upload = exports.request = void 0;var url_all = {
   'DEV': 'http://127.0.0.1/api' // 开发
 };
+
 var BASEURL = url_all['DEV'];
 
 function getToken() {
@@ -18827,7 +18753,574 @@ exports.upload = upload;function handleUpload(options, resolve, reject) {
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 147 */
+/* 148 */
+/*!************************************************************!*\
+  !*** F:/uniapp/cultural-heritage-vue/utils/api/article.js ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.getArticleList = exports.addArticle = exports.putCollect = exports.putLike = exports.getCollectComment = exports.submitComment = exports.getChilComment = exports.getComment = exports.getArticle = exports.getArticleCover = void 0;var _request = __webpack_require__(/*! @/utils/api/request.js */ 147);
+
+
+
+var baseAPI = "/article";
+
+
+// 获得全部文章信息
+var getArticleCover = function getArticleCover(options) {
+  return (0, _request.request)({
+    url: baseAPI + '/getArticleCover',
+    method: 'GET',
+    data: options });
+
+  /*
+                          const mes = await axios.get('/api/article/queryArticleList')
+                          console.log(mes)
+                          async.forEach(mes, async item => {
+                                  if (item.is_cover == 1) {
+                                      const data = await getCoverPic({ pic_id: item.cover_pic })
+                                          // console.log(data)
+                                      item.image = data[0].pic_content
+                                      console.log(item)
+                                          // JSON.parse(JSON.stringify(item.cover_pic))
+                                          // console.log(item.cover_pic)
+                                  }
+                              })
+                              // mes.forEach(async item => {
+                              //     if (item.is_cover == 1) {
+                              //         const data = await getCoverPic({ pic_id: item.cover_pic })
+                              //             // console.log(data)
+                              //         item.cover_pic = data[0].pic_content
+                              //         console.log(item)
+                              //     }
+                              // })
+                          console.log(mes)
+                          return mes
+                      
+                          console.log(mes) */
+};
+
+// 获得文章详情信息
+exports.getArticleCover = getArticleCover;var getArticle = function getArticle(options) {
+  // console.log(data, 'vcdevsdvsdv')
+  return (0, _request.request)({
+    url: baseAPI + '/getArticle',
+    method: 'GET',
+    data: options });
+
+};
+
+
+// 获得文章的图片列表
+// export const getImages = (options) => {
+// 	return request({
+// 		url: '/user/getImages',
+// 		method: 'GET',
+// 		data: options
+// 	})
+// }
+
+// 获得评论信息
+exports.getArticle = getArticle;var getComment = function getComment(options) {
+  return (0, _request.request)({
+    url: baseAPI + '/getComment',
+    method: 'GET',
+    data: options });
+
+};
+
+// 获得子评论信息
+exports.getComment = getComment;var getChilComment = function getChilComment(options) {
+  return (0, _request.request)({
+    url: baseAPI + '/getChilComment',
+    method: 'GET',
+    data: options });
+
+};
+
+
+
+// 提交评论
+exports.getChilComment = getChilComment;var submitComment = function submitComment(options) {
+  return (0, _request.request)({
+    url: baseAPI + '/submitComment',
+    method: 'POST',
+    data: options });
+
+};
+
+
+
+// 获得文章收藏评论信息
+exports.submitComment = submitComment;var getCollectComment = function getCollectComment(options) {
+  return (0, _request.request)({
+    url: baseAPI + '/getCollectComment',
+    method: 'GET',
+    data: options });
+
+};
+
+
+// 修改文章的喜欢
+/**
+ * @param(id,flag)
+ */exports.getCollectComment = getCollectComment;
+var putLike = function putLike(id, flag) {
+  return (0, _request.request)({
+    url: baseAPI + '/putLike',
+    method: 'PUT',
+    data: {
+      article_id: id,
+      flag: flag } });
+
+
+};
+
+
+// 修改文章的喜欢
+/**
+ * @param(id,flag)
+ */exports.putLike = putLike;
+var putCollect = function putCollect(id, flag) {
+  return (0, _request.request)({
+    url: baseAPI + '/putCollect',
+    method: 'PUT',
+    data: {
+      article_id: id,
+      flag: flag } });
+
+
+};
+
+
+
+/**
+    *  修改文章的喜欢
+    * @param(提交表单)
+    * @method(post)
+    */exports.putCollect = putCollect;
+var addArticle = function addArticle(form) {
+  return (0, _request.request)({
+    url: baseAPI + '/addArticle',
+    method: 'POST',
+    data: form });
+
+};
+
+
+// /**
+//  *  修改文章的喜欢
+//  * @param(class_id,length)
+//  * @method(get)
+//  */
+// export const getClassifyArticleCover = (class_id, length) => {
+// 	return request({
+// 		url: baseAPI + '/getClassifyArticleCover',
+// 		method: 'GET',
+// 		data: {
+// 			// class_id: class_id,
+// 			// length: length
+// 			class_id,
+// 			length
+// 		}
+// 	})
+// }
+
+
+/**
+ * 获得文章列表数据
+ * @param{
+ * length:当前已经得到的列表长度
+ * class_id:获得的分类id
+ * state:按什么顺序排序列表（0:最新评论；1:最新发布：2:最多收藏；3:最多喜欢)
+ * }
+ * @returns{list}
+ */exports.addArticle = addArticle;
+var getArticleList = function getArticleList(length, class_id, state) {
+  return (0, _request.request)({
+    url: baseAPI + '/getArticleList',
+    method: 'GET',
+    data: {
+      class_id: class_id,
+      length: length,
+      state: state } });
+
+
+};exports.getArticleList = getArticleList;
+
+/***/ }),
+/* 149 */,
+/* 150 */,
+/* 151 */,
+/* 152 */,
+/* 153 */,
+/* 154 */,
+/* 155 */,
+/* 156 */,
+/* 157 */
+/*!***********************************************************!*\
+  !*** F:/uniapp/cultural-heritage-vue/utils/api/search.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.searchTags = exports.searchUser = exports.searchArticle = exports.getHotSearch = exports.getSearchHistory = void 0;var _request = __webpack_require__(/*! @/utils/api/request.js */ 147);
+
+
+
+var baseAPI = "/search";
+
+
+// 历史搜索信息
+var getSearchHistory = function getSearchHistory(options) {
+  return (0, _request.request)({
+    url: baseAPI + '/getSearchHistory',
+    method: 'GET',
+    data: options });
+
+};
+
+// 热门搜索
+exports.getSearchHistory = getSearchHistory;var getHotSearch = function getHotSearch(options) {
+  return (0, _request.request)({
+    url: baseAPI + '/getHotSearch',
+    method: 'GET',
+    data: options });
+
+};
+
+
+// 搜索文章信息
+exports.getHotSearch = getHotSearch;var searchArticle = function searchArticle(length, info) {
+  return (0, _request.request)({
+    url: baseAPI + '/searchArticle',
+    method: 'POST',
+    data: {
+      length: length,
+      info: info } });
+
+
+};
+
+
+// 搜索用户数据
+exports.searchArticle = searchArticle;var searchUser = function searchUser(length, info) {
+  return (0, _request.request)({
+    url: baseAPI + '/searchUser',
+    method: 'POST',
+    data: {
+      length: length,
+      info: info } });
+
+
+};
+
+// 搜索用户数据
+exports.searchUser = searchUser;var searchTags = function searchTags(length, info) {
+  return (0, _request.request)({
+    url: baseAPI + '/searchTags',
+    method: 'POST',
+    data: {
+      length: length,
+      info: info } });
+
+
+};exports.searchTags = searchTags;
+
+/***/ }),
+/* 158 */,
+/* 159 */,
+/* 160 */,
+/* 161 */,
+/* 162 */,
+/* 163 */,
+/* 164 */,
+/* 165 */,
+/* 166 */
+/*!************************************************************!*\
+  !*** F:/uniapp/cultural-heritage-vue/utils/api/picture.js ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.uploadPP = exports.getAllPic = exports.getCoverPic = exports.dowmloadPic = exports.uploadPic = void 0;var _request = __webpack_require__(/*! @/utils/api/request.js */ 147);
+
+
+
+
+// 上传图片
+var uploadPic = function uploadPic(options) {
+  // return axios.post('/api/user/uploadPic', qs.stringify(data))
+  return (0, _request.request)({
+    url: '/picture/uploadPic',
+    method: 'POST',
+    data: options });
+
+};
+
+// 下载图片
+exports.uploadPic = uploadPic;var dowmloadPic = function dowmloadPic(options) {
+  // console.log(data)
+  // console.log(qs.stringify(data))
+  return (0, _request.request)({
+    url: '/picture/dowmloadPic',
+    method: 'POST',
+    data: options });
+
+};
+
+
+// 获得文章封面图片
+exports.dowmloadPic = dowmloadPic;var getCoverPic = function getCoverPic(options) {
+  return (0, _request.request)({
+    url: '/picture/getCoverPic',
+    method: 'POST',
+    data: options });
+
+};
+
+// 获得文章封面图片
+exports.getCoverPic = getCoverPic;var getAllPic = function getAllPic(options) {
+  return (0, _request.request)({
+    url: '/picture/getAllPic',
+    method: 'POST',
+    data: options });
+
+};
+
+// 上传图片
+exports.getAllPic = getAllPic;var uploadPP = function uploadPP(options) {
+  console.log(options);
+  // return axios.post('/api/user/uploadPic', qs.stringify(data))
+  return (0, _request.upload)({
+    url: '/picture/uploadPP',
+    method: 'POST',
+    data: {
+      pic: options } });
+
+
+};exports.uploadPP = uploadPP;
+
+/***/ }),
+/* 167 */
+/*!*************************************************************************!*\
+  !*** F:/uniapp/cultural-heritage-vue/node_modules/image-tools/index.js ***!
+  \*************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.pathToBase64 = pathToBase64;exports.base64ToPath = base64ToPath;function getLocalFilePath(path) {
+  if (path.indexOf('_www') === 0 || path.indexOf('_doc') === 0 || path.indexOf('_documents') === 0 || path.indexOf('_downloads') === 0) {
+    return path;
+  }
+  if (path.indexOf('file://') === 0) {
+    return path;
+  }
+  if (path.indexOf('/storage/emulated/0/') === 0) {
+    return path;
+  }
+  if (path.indexOf('/') === 0) {
+    var localFilePath = plus.io.convertAbsoluteFileSystem(path);
+    if (localFilePath !== path) {
+      return localFilePath;
+    } else {
+      path = path.substr(1);
+    }
+  }
+  return '_www/' + path;
+}
+
+function dataUrlToBase64(str) {
+  var array = str.split(',');
+  return array[array.length - 1];
+}
+
+var index = 0;
+function getNewFileId() {
+  return Date.now() + String(index++);
+}
+
+function biggerThan(v1, v2) {
+  var v1Array = v1.split('.');
+  var v2Array = v2.split('.');
+  var update = false;
+  for (var index = 0; index < v2Array.length; index++) {
+    var diff = v1Array[index] - v2Array[index];
+    if (diff !== 0) {
+      update = diff > 0;
+      break;
+    }
+  }
+  return update;
+}
+
+function pathToBase64(path) {
+  return new Promise(function (resolve, reject) {
+    if (typeof window === 'object' && 'document' in window) {
+      if (typeof FileReader === 'function') {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', path, true);
+        xhr.responseType = 'blob';
+        xhr.onload = function () {
+          if (this.status === 200) {
+            var fileReader = new FileReader();
+            fileReader.onload = function (e) {
+              resolve(e.target.result);
+            };
+            fileReader.onerror = reject;
+            fileReader.readAsDataURL(this.response);
+          }
+        };
+        xhr.onerror = reject;
+        xhr.send();
+        return;
+      }
+      var canvas = document.createElement('canvas');
+      var c2x = canvas.getContext('2d');
+      var img = new Image();
+      img.onload = function () {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        c2x.drawImage(img, 0, 0);
+        resolve(canvas.toDataURL());
+        canvas.height = canvas.width = 0;
+      };
+      img.onerror = reject;
+      img.src = path;
+      return;
+    }
+    if (typeof plus === 'object') {
+      plus.io.resolveLocalFileSystemURL(getLocalFilePath(path), function (entry) {
+        entry.file(function (file) {
+          var fileReader = new plus.io.FileReader();
+          fileReader.onload = function (data) {
+            resolve(data.target.result);
+          };
+          fileReader.onerror = function (error) {
+            reject(error);
+          };
+          fileReader.readAsDataURL(file);
+        }, function (error) {
+          reject(error);
+        });
+      }, function (error) {
+        reject(error);
+      });
+      return;
+    }
+    if (typeof wx === 'object' && wx.canIUse('getFileSystemManager')) {
+      wx.getFileSystemManager().readFile({
+        filePath: path,
+        encoding: 'base64',
+        success: function success(res) {
+          resolve('data:image/png;base64,' + res.data);
+        },
+        fail: function fail(error) {
+          reject(error);
+        } });
+
+      return;
+    }
+    reject(new Error('not support'));
+  });
+}
+
+function base64ToPath(base64) {
+  return new Promise(function (resolve, reject) {
+    if (typeof window === 'object' && 'document' in window) {
+      base64 = base64.split(',');
+      var type = base64[0].match(/:(.*?);/)[1];
+      var str = atob(base64[1]);
+      var n = str.length;
+      var array = new Uint8Array(n);
+      while (n--) {
+        array[n] = str.charCodeAt(n);
+      }
+      return resolve((window.URL || window.webkitURL).createObjectURL(new Blob([array], { type: type })));
+    }
+    var extName = base64.split(',')[0].match(/data\:\S+\/(\S+);/);
+    if (extName) {
+      extName = extName[1];
+    } else {
+      reject(new Error('base64 error'));
+    }
+    var fileName = getNewFileId() + '.' + extName;
+    if (typeof plus === 'object') {
+      var basePath = '_doc';
+      var dirPath = 'uniapp_temp';
+      var filePath = basePath + '/' + dirPath + '/' + fileName;
+      if (!biggerThan(plus.os.name === 'Android' ? '1.9.9.80627' : '1.9.9.80472', plus.runtime.innerVersion)) {
+        plus.io.resolveLocalFileSystemURL(basePath, function (entry) {
+          entry.getDirectory(dirPath, {
+            create: true,
+            exclusive: false },
+          function (entry) {
+            entry.getFile(fileName, {
+              create: true,
+              exclusive: false },
+            function (entry) {
+              entry.createWriter(function (writer) {
+                writer.onwrite = function () {
+                  resolve(filePath);
+                };
+                writer.onerror = reject;
+                writer.seek(0);
+                writer.writeAsBinary(dataUrlToBase64(base64));
+              }, reject);
+            }, reject);
+          }, reject);
+        }, reject);
+        return;
+      }
+      var bitmap = new plus.nativeObj.Bitmap(fileName);
+      bitmap.loadBase64Data(base64, function () {
+        bitmap.save(filePath, {}, function () {
+          bitmap.clear();
+          resolve(filePath);
+        }, function (error) {
+          bitmap.clear();
+          reject(error);
+        });
+      }, function (error) {
+        bitmap.clear();
+        reject(error);
+      });
+      return;
+    }
+    if (typeof wx === 'object' && wx.canIUse('getFileSystemManager')) {
+      var filePath = wx.env.USER_DATA_PATH + '/' + fileName;
+      wx.getFileSystemManager().writeFile({
+        filePath: filePath,
+        data: dataUrlToBase64(base64),
+        encoding: 'base64',
+        success: function success() {
+          resolve(filePath);
+        },
+        fail: function fail(error) {
+          reject(error);
+        } });
+
+      return;
+    }
+    reject(new Error('not support'));
+  });
+}
+
+/***/ }),
+/* 168 */,
+/* 169 */,
+/* 170 */,
+/* 171 */,
+/* 172 */,
+/* 173 */,
+/* 174 */,
+/* 175 */,
+/* 176 */
 /*!*********************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/utils/api/user.js ***!
   \*********************************************************/
@@ -18835,7 +19328,7 @@ exports.upload = upload;function handleUpload(options, resolve, reject) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getMineInfo = exports.searchUser = exports.getFollowedUsers = exports.getFollowers = exports.getFollow = exports.getUserChatInfo = exports.getUserArticle = exports.getUserInfo = exports.setFollow = exports.updateUserInfo = exports.getUserInfoList = exports.userLogin = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 34));var _request = __webpack_require__(/*! @/utils/api/request.js */ 146);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
+Object.defineProperty(exports, "__esModule", { value: true });exports.delectArticle = exports.getCollection = exports.getMineInfo = exports.getFollowedUsers = exports.getFollowers = exports.getFollow = exports.getUserChatInfo = exports.getUserArticle = exports.getUserInfo = exports.getUserIntro = exports.setFollow = exports.updateUserInfo = exports.getUserInfoList = exports.userLogin = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 34));var _request = __webpack_require__(/*! @/utils/api/request.js */ 147);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
 
 
 
@@ -18870,8 +19363,12 @@ exports.getUserInfoList = getUserInfoList;var updateUserInfo = function updateUs
 
 };
 
-// 修改关注信息 关注的取关 未关注的关注
-exports.updateUserInfo = updateUserInfo;var setFollow = /*#__PURE__*/function () {var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(options) {return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:return _context.abrupt("return",
+
+/**
+    * 修改关注信息 关注的取关 未关注的关注
+    * @param(id,flag)
+    */exports.updateUserInfo = updateUserInfo;
+var setFollow = /*#__PURE__*/function () {var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(options) {return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:return _context.abrupt("return",
 
 
 
@@ -18882,13 +19379,34 @@ exports.updateUserInfo = updateUserInfo;var setFollow = /*#__PURE__*/function ()
 
 
 
+/**
+                                                                                                                                                                     * 获得用户头像昵称和简介
+                                                                                                                                                                     * @param(user_id)
+                                                                                                                                                                     * @returns(nickname,head,introduce)
+                                                                                                                                                                     */exports.setFollow = setFollow;
+var getUserIntro = function getUserIntro(id) {
+  return (0, _request.request)({
+    url: baseAPI + '/getUserIntro',
+    method: 'GET',
+    data: {
+      user_id: id } });
 
-// 获得用户数据
-exports.setFollow = setFollow;var getUserInfo = function getUserInfo(options) {
+
+};
+
+
+/**
+    *  获得用户数据
+    * @param (user_id)
+    * @returns (全部用户信息邮箱电话等)
+    */exports.getUserIntro = getUserIntro;
+var getUserInfo = function getUserInfo(id) {
   return (0, _request.request)({
     url: baseAPI + '/getUserInfo',
     method: 'GET',
-    data: options });
+    data: {
+      user_id: id } });
+
 
 };
 
@@ -18939,35 +19457,146 @@ exports.getFollowers = getFollowers;var getFollowedUsers = function getFollowedU
 };
 
 
-// 主用户粉丝列表
-exports.getFollowedUsers = getFollowedUsers;var searchUser = function searchUser(options) {
+// 个人页面信息
+exports.getFollowedUsers = getFollowedUsers;var getMineInfo = function getMineInfo(options) {
   return (0, _request.request)({
-    url: baseAPI + '/searchUser',
+    url: baseAPI + '/getMineInfo',
     method: 'GET',
     data: options });
 
 };
 
 
-// 个人页面信息
-exports.searchUser = searchUser;var getMineInfo = function getMineInfo(options) {
+// 个人收藏帖子信息
+exports.getMineInfo = getMineInfo;var getCollection = function getCollection() {
   return (0, _request.request)({
-    url: baseAPI + '/getMineInfo',
-    method: 'GET',
-    data: options });
+    url: baseAPI + '/getCollection',
+    method: 'GET' });
 
-};exports.getMineInfo = getMineInfo;
+};
+
+
+// 删除帖子（实际不删除，设置idDel=1
+exports.getCollection = getCollection;var delectArticle = function delectArticle(id) {
+  return (0, _request.request)({
+    url: baseAPI + '/delectArticle',
+    method: 'DELETE',
+    data: {
+      article_id: id } });
+
+
+};exports.delectArticle = delectArticle;
 
 /***/ }),
-/* 148 */,
-/* 149 */,
-/* 150 */,
-/* 151 */,
-/* 152 */,
-/* 153 */,
-/* 154 */,
-/* 155 */,
-/* 156 */
+/* 177 */
+/*!**********************************************************!*\
+  !*** F:/uniapp/cultural-heritage-vue/utils/api/goods.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.addGoods = exports.putGoodLook = exports.getGoods = void 0;var _request = __webpack_require__(/*! @/utils/api/request.js */ 147);
+
+
+
+var baseAPI = "/goods";
+
+
+/**
+                         * 获得商品信息
+                         * @param (goods_id)
+                         */
+var getGoods = function getGoods(id) {
+  return (0, _request.request)({
+    url: baseAPI + '/getGoods',
+    method: 'GET',
+    data: {
+      goods_id: id } });
+
+
+};
+
+
+/**
+    * 商品查看次数+1
+    * @param (goods_id)
+    * @method put
+    */exports.getGoods = getGoods;
+var putGoodLook = function putGoodLook(id) {
+  return (0, _request.request)({
+    url: baseAPI + '/putGoodLook',
+    method: 'PUT',
+    data: {
+      goods_id: id } });
+
+
+};
+
+
+/**
+    * 添加商品
+    * @param(form)
+    *@returns(mes)
+    */exports.putGoodLook = putGoodLook;
+var addGoods = function addGoods(form) {
+  return (0, _request.request)({
+    url: baseAPI + '/addGoods',
+    method: 'POST',
+    data: form });
+
+};exports.addGoods = addGoods;
+
+/***/ }),
+/* 178 */,
+/* 179 */,
+/* 180 */,
+/* 181 */,
+/* 182 */,
+/* 183 */,
+/* 184 */,
+/* 185 */,
+/* 186 */,
+/* 187 */,
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */,
+/* 192 */
+/*!************************************************************!*\
+  !*** F:/uniapp/cultural-heritage-vue/utils/api/dynamic.js ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.getFollowDynamic = void 0;var _request = __webpack_require__(/*! @/utils/api/request.js */ 147);
+
+
+
+var baseAPI = "/dynamic";
+
+// 登录
+var getFollowDynamic = function getFollowDynamic(length) {
+  return (0, _request.request)({
+    url: baseAPI + '/getFollowDynamic',
+    method: 'GET',
+    data: {
+      length: length } });
+
+
+};exports.getFollowDynamic = getFollowDynamic;
+
+/***/ }),
+/* 193 */,
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */,
+/* 198 */,
+/* 199 */,
+/* 200 */,
+/* 201 */
 /*!**********************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/utils/data/data.js ***!
   \**********************************************************/
@@ -19944,141 +20573,6 @@ var feedbackList = [{
   content: '这个问题太简单了，我没法回答，请就地解决吧(>_<)' }];exports.feedbackList = feedbackList;
 
 /***/ }),
-/* 157 */,
-/* 158 */,
-/* 159 */,
-/* 160 */,
-/* 161 */,
-/* 162 */,
-/* 163 */,
-/* 164 */,
-/* 165 */
-/*!************************************************************!*\
-  !*** F:/uniapp/cultural-heritage-vue/utils/api/picture.js ***!
-  \************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.uploadPP = exports.getAllPic = exports.getCoverPic = exports.dowmloadPic = exports.uploadPic = void 0;var _request = __webpack_require__(/*! @/utils/api/request.js */ 146);
-
-
-
-
-// 上传图片
-var uploadPic = function uploadPic(options) {
-  // return axios.post('/api/user/uploadPic', qs.stringify(data))
-  return (0, _request.request)({
-    url: '/picture/uploadPic',
-    method: 'POST',
-    data: options });
-
-};
-
-// 下载图片
-exports.uploadPic = uploadPic;var dowmloadPic = function dowmloadPic(options) {
-  // console.log(data)
-  // console.log(qs.stringify(data))
-  return (0, _request.request)({
-    url: '/picture/dowmloadPic',
-    method: 'POST',
-    data: options });
-
-};
-
-
-// 获得文章封面图片
-exports.dowmloadPic = dowmloadPic;var getCoverPic = function getCoverPic(options) {
-  return (0, _request.request)({
-    url: '/picture/getCoverPic',
-    method: 'POST',
-    data: options });
-
-};
-
-// 获得文章封面图片
-exports.getCoverPic = getCoverPic;var getAllPic = function getAllPic(options) {
-  return (0, _request.request)({
-    url: '/picture/getAllPic',
-    method: 'POST',
-    data: options });
-
-};
-
-// 上传图片
-exports.getAllPic = getAllPic;var uploadPP = function uploadPP(options) {
-  console.log(options);
-  // return axios.post('/api/user/uploadPic', qs.stringify(data))
-  return (0, _request.upload)({
-    url: '/picture/uploadPP',
-    method: 'POST',
-    data: {
-      pic: options } });
-
-
-};exports.uploadPP = uploadPP;
-
-/***/ }),
-/* 166 */,
-/* 167 */,
-/* 168 */,
-/* 169 */,
-/* 170 */,
-/* 171 */,
-/* 172 */,
-/* 173 */,
-/* 174 */,
-/* 175 */,
-/* 176 */,
-/* 177 */,
-/* 178 */,
-/* 179 */,
-/* 180 */,
-/* 181 */,
-/* 182 */,
-/* 183 */,
-/* 184 */,
-/* 185 */,
-/* 186 */,
-/* 187 */,
-/* 188 */
-/*!************************************************************!*\
-  !*** F:/uniapp/cultural-heritage-vue/utils/api/dynamic.js ***!
-  \************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getFollowDynamic = void 0;var _request = __webpack_require__(/*! @/utils/api/request.js */ 146);
-
-
-
-var baseAPI = "/dynamic";
-
-// 登录
-var getFollowDynamic = function getFollowDynamic(options) {
-  // return axios.post('/api/user/login', qs.stringify(data))
-  return (0, _request.request)({
-    url: baseAPI + '/getFollowDynamic',
-    method: 'GET',
-    data: options });
-
-};exports.getFollowDynamic = getFollowDynamic;
-
-/***/ }),
-/* 189 */,
-/* 190 */,
-/* 191 */,
-/* 192 */,
-/* 193 */,
-/* 194 */,
-/* 195 */,
-/* 196 */,
-/* 197 */,
-/* 198 */,
-/* 199 */,
-/* 200 */,
-/* 201 */,
 /* 202 */,
 /* 203 */,
 /* 204 */,
@@ -20090,7 +20584,12 @@ var getFollowDynamic = function getFollowDynamic(options) {
 /* 210 */,
 /* 211 */,
 /* 212 */,
-/* 213 */
+/* 213 */,
+/* 214 */,
+/* 215 */,
+/* 216 */,
+/* 217 */,
+/* 218 */
 /*!**********************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/utils/api/paper.js ***!
   \**********************************************************/
@@ -20098,7 +20597,7 @@ var getFollowDynamic = function getFollowDynamic(options) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getPaperList = exports.submitChat = exports.getChatList = void 0;var _request = __webpack_require__(/*! @/utils/api/request.js */ 146);
+Object.defineProperty(exports, "__esModule", { value: true });exports.getPaperList = exports.submitChat = exports.getChatList = void 0;var _request = __webpack_require__(/*! @/utils/api/request.js */ 147);
 
 
 
@@ -20134,11 +20633,6 @@ exports.submitChat = submitChat;var getPaperList = function getPaperList(options
 };exports.getPaperList = getPaperList;
 
 /***/ }),
-/* 214 */,
-/* 215 */,
-/* 216 */,
-/* 217 */,
-/* 218 */,
 /* 219 */,
 /* 220 */,
 /* 221 */,
@@ -20229,7 +20723,229 @@ exports.submitChat = submitChat;var getPaperList = function getPaperList(options
 /* 306 */,
 /* 307 */,
 /* 308 */,
-/* 309 */
+/* 309 */,
+/* 310 */,
+/* 311 */,
+/* 312 */,
+/* 313 */,
+/* 314 */,
+/* 315 */,
+/* 316 */,
+/* 317 */,
+/* 318 */,
+/* 319 */,
+/* 320 */,
+/* 321 */,
+/* 322 */,
+/* 323 */,
+/* 324 */,
+/* 325 */,
+/* 326 */,
+/* 327 */,
+/* 328 */,
+/* 329 */,
+/* 330 */,
+/* 331 */,
+/* 332 */,
+/* 333 */,
+/* 334 */,
+/* 335 */,
+/* 336 */,
+/* 337 */,
+/* 338 */,
+/* 339 */,
+/* 340 */,
+/* 341 */,
+/* 342 */,
+/* 343 */,
+/* 344 */,
+/* 345 */,
+/* 346 */,
+/* 347 */,
+/* 348 */,
+/* 349 */,
+/* 350 */,
+/* 351 */,
+/* 352 */,
+/* 353 */
+/*!**********************************************************!*\
+  !*** F:/uniapp/cultural-heritage-vue/utils/api/order.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.queryOrder = exports.getOrderDesc = exports.initOrder = exports.getDefCgn = exports.delConsignee = exports.editConsignee = exports.getConsignee = void 0;var _request = __webpack_require__(/*! @/utils/api/request.js */ 147);
+
+
+var baseAPI = "/order";
+
+
+/**
+                         * 获得收货人地址信息
+                         * @returns(收货人信息列表)
+                         * @method(get)
+                         */
+var getConsignee = function getConsignee() {
+  return (0, _request.request)({
+    url: baseAPI + '/getConsignee',
+    method: 'GET' });
+
+};
+
+/**
+    * 添加收货人信息
+    * @param(form)
+    * @returns()
+    */exports.getConsignee = getConsignee;
+var editConsignee = function editConsignee(form) {
+  return (0, _request.request)({
+    url: baseAPI + '/editConsignee',
+    method: 'POST',
+    data: form });
+
+};
+
+/**
+    * 删除用户的收货地址
+    * @param(cgn_id)
+    * @returns(msg)
+    * @method(delete)
+    */exports.editConsignee = editConsignee;
+var delConsignee = function delConsignee(id) {
+  return (0, _request.request)({
+    url: baseAPI + '/delConsignee',
+    method: 'DELETE',
+    data: {
+      cgn_id: id } });
+
+
+};
+
+
+/**
+    * 获得用户的默认收货地址
+    * @param()
+    * @returns(地址)
+    * @method(get)
+    */exports.delConsignee = delConsignee;
+var getDefCgn = function getDefCgn() {
+  return (0, _request.request)({
+    url: baseAPI + '/getDefCgn',
+    method: 'GET' });
+
+};
+
+/**
+    * 发起订单
+    * @param(goods_id,cgn_id,seller_user_id,actual_price)
+    * @returns(订单状态)
+    * @method(post)
+    */exports.getDefCgn = getDefCgn;
+var initOrder = function initOrder(goods, cgn, user, price) {
+  return (0, _request.request)({
+    url: baseAPI + '/initOrder',
+    method: 'POST',
+    data: {
+      goods_id: goods,
+      cgn_id: cgn,
+      seller_user_id: user,
+      price: price } });
+
+
+};
+
+/**
+    * 查看订单详情
+    * @param(order_id)
+    * @returns(订单信息，商品信息)
+    * @method(get)
+    */exports.initOrder = initOrder;
+var getOrderDesc = function getOrderDesc(id) {
+  return (0, _request.request)({
+    url: baseAPI + '/getOrderDesc',
+    method: 'GET',
+    data: {
+      order_id: id } });
+
+
+};
+
+
+/**
+    * 获取该用户的全部订单信息
+    * @param()
+    * @returns(订单信息)
+    * @method(get)
+    */exports.getOrderDesc = getOrderDesc;
+var queryOrder = function queryOrder() {
+  return (0, _request.request)({
+    url: baseAPI + '/queryOrder',
+    method: 'GET' });
+
+};exports.queryOrder = queryOrder;
+
+/***/ }),
+/* 354 */,
+/* 355 */,
+/* 356 */,
+/* 357 */,
+/* 358 */,
+/* 359 */,
+/* 360 */,
+/* 361 */,
+/* 362 */,
+/* 363 */,
+/* 364 */,
+/* 365 */,
+/* 366 */,
+/* 367 */,
+/* 368 */,
+/* 369 */,
+/* 370 */,
+/* 371 */,
+/* 372 */,
+/* 373 */,
+/* 374 */,
+/* 375 */,
+/* 376 */,
+/* 377 */,
+/* 378 */,
+/* 379 */,
+/* 380 */,
+/* 381 */,
+/* 382 */,
+/* 383 */,
+/* 384 */,
+/* 385 */,
+/* 386 */,
+/* 387 */,
+/* 388 */,
+/* 389 */,
+/* 390 */,
+/* 391 */,
+/* 392 */,
+/* 393 */,
+/* 394 */,
+/* 395 */,
+/* 396 */,
+/* 397 */,
+/* 398 */,
+/* 399 */,
+/* 400 */,
+/* 401 */,
+/* 402 */,
+/* 403 */,
+/* 404 */,
+/* 405 */,
+/* 406 */,
+/* 407 */,
+/* 408 */,
+/* 409 */,
+/* 410 */,
+/* 411 */,
+/* 412 */,
+/* 413 */
 /*!*****************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-navbar/props.js ***!
   \*****************************************************************************************/
@@ -20321,14 +21037,14 @@ exports.submitChat = submitChat;var getPaperList = function getPaperList(options
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 310 */,
-/* 311 */,
-/* 312 */,
-/* 313 */,
-/* 314 */,
-/* 315 */,
-/* 316 */,
-/* 317 */
+/* 414 */,
+/* 415 */,
+/* 416 */,
+/* 417 */,
+/* 418 */,
+/* 419 */,
+/* 420 */,
+/* 421 */
 /*!*****************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-search/props.js ***!
   \*****************************************************************************************/
@@ -20454,148 +21170,21 @@ exports.submitChat = submitChat;var getPaperList = function getPaperList(options
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 318 */,
-/* 319 */,
-/* 320 */,
-/* 321 */,
-/* 322 */,
-/* 323 */,
-/* 324 */,
-/* 325 */
-/*!*****************************************************************************************!*\
-  !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-sticky/props.js ***!
-  \*****************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
-  props: {
-    // 吸顶容器到顶部某个距离的时候，进行吸顶，在H5平台，NavigationBar为44px
-    offsetTop: {
-      type: [String, Number],
-      default: uni.$u.props.sticky.offsetTop },
-
-    // 自定义导航栏的高度
-    customNavHeight: {
-      type: [String, Number],
-
-
-
-
-
-      default: uni.$u.props.sticky.customNavHeight },
-
-
-    // 是否开启吸顶功能
-    disabled: {
-      type: Boolean,
-      default: uni.$u.props.sticky.disabled },
-
-    // 吸顶区域的背景颜色
-    bgColor: {
-      type: String,
-      default: uni.$u.props.sticky.bgColor },
-
-    // z-index值
-    zIndex: {
-      type: [String, Number],
-      default: uni.$u.props.sticky.zIndex },
-
-    // 列表中的索引值
-    index: {
-      type: [String, Number],
-      default: uni.$u.props.sticky.index } } };exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-/* 326 */,
-/* 327 */,
-/* 328 */,
-/* 329 */,
-/* 330 */,
-/* 331 */,
-/* 332 */,
-/* 333 */
-/*!***************************************************************************************!*\
-  !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-tabs/props.js ***!
-  \***************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
-  props: {
-    // 滑块的移动过渡时间，单位ms
-    duration: {
-      type: Number,
-      default: uni.$u.props.tabs.duration },
-
-    // tabs标签数组
-    list: {
-      type: Array,
-      default: uni.$u.props.tabs.list },
-
-    // 滑块颜色
-    lineColor: {
-      type: String,
-      default: uni.$u.props.tabs.lineColor },
-
-    // 菜单选择中时的样式
-    activeStyle: {
-      type: [String, Object],
-      default: uni.$u.props.tabs.activeStyle },
-
-    // 菜单非选中时的样式
-    inactiveStyle: {
-      type: [String, Object],
-      default: uni.$u.props.tabs.inactiveStyle },
-
-    // 滑块长度
-    lineWidth: {
-      type: [String, Number],
-      default: uni.$u.props.tabs.lineWidth },
-
-    // 滑块高度
-    lineHeight: {
-      type: [String, Number],
-      default: uni.$u.props.tabs.lineHeight },
-
-    // 滑块背景显示大小，当滑块背景设置为图片时使用
-    lineBgSize: {
-      type: String,
-      default: uni.$u.props.tabs.lineBgSize },
-
-    // 菜单item的样式
-    itemStyle: {
-      type: [String, Object],
-      default: uni.$u.props.tabs.itemStyle },
-
-    // 菜单是否可滚动
-    scrollable: {
-      type: Boolean,
-      default: uni.$u.props.tabs.scrollable },
-
-    // 当前选中标签的索引
-    current: {
-      type: [Number, String],
-      default: uni.$u.props.tabs.current },
-
-    // 默认读取的键名
-    keyName: {
-      type: String,
-      default: uni.$u.props.tabs.keyName } } };exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-/* 334 */,
-/* 335 */,
-/* 336 */,
-/* 337 */,
-/* 338 */,
-/* 339 */,
-/* 340 */,
-/* 341 */
+/* 422 */,
+/* 423 */,
+/* 424 */,
+/* 425 */,
+/* 426 */,
+/* 427 */,
+/* 428 */,
+/* 429 */,
+/* 430 */,
+/* 431 */,
+/* 432 */,
+/* 433 */,
+/* 434 */,
+/* 435 */,
+/* 436 */
 /*!****************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-empty/props.js ***!
   \****************************************************************************************/
@@ -20662,14 +21251,14 @@ exports.submitChat = submitChat;var getPaperList = function getPaperList(options
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 342 */,
-/* 343 */,
-/* 344 */,
-/* 345 */,
-/* 346 */,
-/* 347 */,
-/* 348 */,
-/* 349 */
+/* 437 */,
+/* 438 */,
+/* 439 */,
+/* 440 */,
+/* 441 */,
+/* 442 */,
+/* 443 */,
+/* 444 */
 /*!*******************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-loadmore/props.js ***!
   \*******************************************************************************************/
@@ -20771,14 +21360,14 @@ exports.submitChat = submitChat;var getPaperList = function getPaperList(options
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 350 */,
-/* 351 */,
-/* 352 */,
-/* 353 */,
-/* 354 */,
-/* 355 */,
-/* 356 */,
-/* 357 */
+/* 445 */,
+/* 446 */,
+/* 447 */,
+/* 448 */,
+/* 449 */,
+/* 450 */,
+/* 451 */,
+/* 452 */
 /*!***************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-icon/icons.js ***!
   \***************************************************************************************/
@@ -21001,7 +21590,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   'uicon-en': "\uE692" };exports.default = _default;
 
 /***/ }),
-/* 358 */
+/* 453 */
 /*!***************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-icon/props.js ***!
   \***************************************************************************************/
@@ -21098,23 +21687,23 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 359 */,
-/* 360 */,
-/* 361 */,
-/* 362 */,
-/* 363 */,
-/* 364 */,
-/* 365 */,
-/* 366 */,
-/* 367 */,
-/* 368 */,
-/* 369 */,
-/* 370 */,
-/* 371 */,
-/* 372 */,
-/* 373 */
+/* 454 */,
+/* 455 */,
+/* 456 */,
+/* 457 */,
+/* 458 */,
+/* 459 */,
+/* 460 */,
+/* 461 */,
+/* 462 */,
+/* 463 */,
+/* 464 */,
+/* 465 */,
+/* 466 */,
+/* 467 */,
+/* 468 */
 /*!***************************************************************************************!*\
-  !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-text/props.js ***!
+  !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-tabs/props.js ***!
   \***************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -21122,604 +21711,97 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
   props: {
-    // 主题颜色
-    type: {
+    // 滑块的移动过渡时间，单位ms
+    duration: {
+      type: Number,
+      default: uni.$u.props.tabs.duration },
+
+    // tabs标签数组
+    list: {
+      type: Array,
+      default: uni.$u.props.tabs.list },
+
+    // 滑块颜色
+    lineColor: {
       type: String,
-      default: uni.$u.props.text.type },
+      default: uni.$u.props.tabs.lineColor },
 
-    // 是否显示
-    show: {
-      type: Boolean,
-      default: uni.$u.props.text.show },
+    // 菜单选择中时的样式
+    activeStyle: {
+      type: [String, Object],
+      default: uni.$u.props.tabs.activeStyle },
 
-    // 显示的值
-    text: {
+    // 菜单非选中时的样式
+    inactiveStyle: {
+      type: [String, Object],
+      default: uni.$u.props.tabs.inactiveStyle },
+
+    // 滑块长度
+    lineWidth: {
       type: [String, Number],
-      default: uni.$u.props.text.text },
+      default: uni.$u.props.tabs.lineWidth },
 
-    // 前置图标
-    prefixIcon: {
-      type: String,
-      default: uni.$u.props.text.prefixIcon },
-
-    // 后置图标
-    suffixIcon: {
-      type: String,
-      default: uni.$u.props.text.suffixIcon },
-
-    // 文本处理的匹配模式
-    // text-普通文本，price-价格，phone-手机号，name-姓名，date-日期，link-超链接
-    mode: {
-      type: String,
-      default: uni.$u.props.text.mode },
-
-    // mode=link下，配置的链接
-    href: {
-      type: String,
-      default: uni.$u.props.text.href },
-
-    // 格式化规则
-    format: {
-      type: [String, Function],
-      default: uni.$u.props.text.format },
-
-    // mode=phone时，点击文本是否拨打电话
-    call: {
-      type: Boolean,
-      default: uni.$u.props.text.call },
-
-    // 小程序的打开方式
-    openType: {
-      type: String,
-      default: uni.$u.props.text.openType },
-
-    // 是否粗体，默认normal
-    bold: {
-      type: Boolean,
-      default: uni.$u.props.text.bold },
-
-    // 是否块状
-    block: {
-      type: Boolean,
-      default: uni.$u.props.text.block },
-
-    // 文本显示的行数，如果设置，超出此行数，将会显示省略号
-    lines: {
-      type: [String, Number],
-      default: uni.$u.props.text.lines },
-
-    // 文本颜色
-    color: {
-      type: String,
-      default: uni.$u.props.text.color },
-
-    // 字体大小
-    size: {
-      type: [String, Number],
-      default: uni.$u.props.text.size },
-
-    // 图标的样式
-    iconStyle: {
-      type: [Object, String],
-      default: uni.$u.props.text.iconStyle },
-
-    // 文字装饰，下划线，中划线等，可选值 none|underline|line-through
-    decoration: {
-      tepe: String,
-      default: uni.$u.props.text.decoration },
-
-    // 外边距，对象、字符串，数值形式均可
-    margin: {
-      type: [Object, String, Number],
-      default: uni.$u.props.text.margin },
-
-    // 文本行高
+    // 滑块高度
     lineHeight: {
       type: [String, Number],
-      default: uni.$u.props.text.lineHeight },
+      default: uni.$u.props.tabs.lineHeight },
 
-    // 文本对齐方式，可选值left|center|right
-    align: {
+    // 滑块背景显示大小，当滑块背景设置为图片时使用
+    lineBgSize: {
       type: String,
-      default: uni.$u.props.text.align },
+      default: uni.$u.props.tabs.lineBgSize },
 
-    // 文字换行，可选值break-word|normal|anywhere
-    wordWrap: {
-      type: String,
-      default: uni.$u.props.text.wordWrap } } };exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-/* 374 */,
-/* 375 */,
-/* 376 */,
-/* 377 */,
-/* 378 */,
-/* 379 */,
-/* 380 */,
-/* 381 */,
-/* 382 */,
-/* 383 */,
-/* 384 */,
-/* 385 */,
-/* 386 */,
-/* 387 */,
-/* 388 */,
-/* 389 */,
-/* 390 */,
-/* 391 */,
-/* 392 */,
-/* 393 */,
-/* 394 */,
-/* 395 */,
-/* 396 */,
-/* 397 */,
-/* 398 */,
-/* 399 */,
-/* 400 */
-/*!*******************************************************************************************!*\
-  !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-textarea/props.js ***!
-  \*******************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
-  props: {
-    // 输入框的内容
-    value: {
-      type: [String, Number],
-      default: uni.$u.props.textarea.value },
-
-    // 输入框为空时占位符
-    placeholder: {
-      type: [String, Number],
-      default: uni.$u.props.textarea.placeholder },
-
-    // 指定placeholder的样式类，注意页面或组件的style中写了scoped时，需要在类名前写/deep/
-    placeholderClass: {
-      type: String,
-      default: uni.$u.props.input.placeholderClass },
-
-    // 指定placeholder的样式
-    placeholderStyle: {
+    // 菜单item的样式
+    itemStyle: {
       type: [String, Object],
-      default: uni.$u.props.input.placeholderStyle },
+      default: uni.$u.props.tabs.itemStyle },
 
-    // 输入框高度
-    height: {
-      type: [String, Number],
-      default: uni.$u.props.textarea.height },
+    // 菜单是否可滚动
+    scrollable: {
+      type: Boolean,
+      default: uni.$u.props.tabs.scrollable },
 
-    // 设置键盘右下角按钮的文字，仅微信小程序，App-vue和H5有效
-    confirmType: {
+    // 当前选中标签的索引
+    current: {
+      type: [Number, String],
+      default: uni.$u.props.tabs.current },
+
+    // 默认读取的键名
+    keyName: {
       type: String,
-      default: uni.$u.props.textarea.confirmType },
-
-    // 是否禁用
-    disabled: {
-      type: Boolean,
-      default: uni.$u.props.textarea.disabled },
-
-    // 是否显示统计字数
-    count: {
-      type: Boolean,
-      default: uni.$u.props.textarea.count },
-
-    // 是否自动获取焦点，nvue不支持，H5取决于浏览器的实现
-    focus: {
-      type: Boolean,
-      default: uni.$u.props.textarea.focus },
-
-    // 是否自动增加高度
-    autoHeight: {
-      type: Boolean,
-      default: uni.$u.props.textarea.autoHeight },
-
-    // 如果textarea是在一个position:fixed的区域，需要显示指定属性fixed为true
-    fixed: {
-      type: Boolean,
-      default: uni.$u.props.textarea.fixed },
-
-    // 指定光标与键盘的距离
-    cursorSpacing: {
-      type: Number,
-      default: uni.$u.props.textarea.cursorSpacing },
-
-    // 指定focus时的光标位置
-    cursor: {
-      type: [String, Number],
-      default: uni.$u.props.textarea.cursor },
-
-    // 是否显示键盘上方带有”完成“按钮那一栏，
-    showConfirmBar: {
-      type: Boolean,
-      default: uni.$u.props.textarea.showConfirmBar },
-
-    // 光标起始位置，自动聚焦时有效，需与selection-end搭配使用
-    selectionStart: {
-      type: Number,
-      default: uni.$u.props.textarea.selectionStart },
-
-    // 光标结束位置，自动聚焦时有效，需与selection-start搭配使用
-    selectionEnd: {
-      type: Number,
-      default: uni.$u.props.textarea.selectionEnd },
-
-    // 键盘弹起时，是否自动上推页面
-    adjustPosition: {
-      type: Boolean,
-      default: uni.$u.props.textarea.adjustPosition },
-
-    // 是否去掉 iOS 下的默认内边距，只微信小程序有效
-    disableDefaultPadding: {
-      type: Boolean,
-      default: uni.$u.props.textarea.disableDefaultPadding },
-
-    // focus时，点击页面的时候不收起键盘，只微信小程序有效
-    holdKeyboard: {
-      type: Boolean,
-      default: uni.$u.props.textarea.holdKeyboard },
-
-    // 最大输入长度，设置为 -1 的时候不限制最大长度
-    maxlength: {
-      type: [String, Number],
-      default: uni.$u.props.textarea.maxlength },
-
-    // 边框类型，surround-四周边框，bottom-底部边框
-    border: {
-      type: String,
-      default: uni.$u.props.textarea.border },
-
-    // 用于处理或者过滤输入框内容的方法
-    formatter: {
-      type: [Function, null],
-      default: uni.$u.props.textarea.formatter },
-
-    // 是否忽略组件内对文本合成系统事件的处理
-    ignoreCompositionEvent: {
-      type: Boolean,
-      default: true } } };exports.default = _default;
+      default: uni.$u.props.tabs.keyName } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 401 */,
-/* 402 */,
-/* 403 */,
-/* 404 */,
-/* 405 */,
-/* 406 */,
-/* 407 */,
-/* 408 */
-/*!*****************************************************************************************!*\
-  !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-upload/utils.js ***!
-  \*****************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.chooseFile = chooseFile;function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function pickExclude(obj, keys) {
-  // 某些情况下，type可能会为
-  if (!['[object Object]', '[object File]'].includes(Object.prototype.toString.call(obj))) {
-    return {};
-  }
-  return Object.keys(obj).reduce(function (prev, key) {
-    if (!keys.includes(key)) {
-      prev[key] = obj[key];
-    }
-    return prev;
-  }, {});
-}
-
-function formatImage(res) {
-  return res.tempFiles.map(function (item) {return _objectSpread(_objectSpread({},
-    pickExclude(item, ['path'])), {}, {
-      type: 'image',
-      url: item.path,
-      thumb: item.path,
-      size: item.size });});
-
-
-
-
-}
-
-function formatVideo(res) {
-  return [_objectSpread(_objectSpread({},
-
-  pickExclude(res, ['tempFilePath', 'thumbTempFilePath', 'errMsg'])), {}, {
-    type: 'video',
-    url: res.tempFilePath,
-    thumb: res.thumbTempFilePath,
-    size: res.size })];
-
-
-
-
-
-}
-
-function formatMedia(res) {
-  return res.tempFiles.map(function (item) {return _objectSpread(_objectSpread({},
-    pickExclude(item, ['fileType', 'thumbTempFilePath', 'tempFilePath'])), {}, {
-      type: res.type,
-      url: item.tempFilePath,
-      thumb: res.type === 'video' ? item.thumbTempFilePath : item.tempFilePath,
-      size: item.size });});
-
-}
-
-function formatFile(res) {
-  return res.tempFiles.map(function (item) {return _objectSpread(_objectSpread({},
-    pickExclude(item, ['path'])), {}, {
-      url: item.path,
-      size: item.size });});
-
-
-
-
-
-}
-function chooseFile(_ref)
-
-
-
-
-
-
-
-
-{var accept = _ref.accept,multiple = _ref.multiple,capture = _ref.capture,compressed = _ref.compressed,maxDuration = _ref.maxDuration,sizeType = _ref.sizeType,camera = _ref.camera,maxCount = _ref.maxCount;
-  return new Promise(function (resolve, reject) {
-    switch (accept) {
-      case 'image':
-        uni.chooseImage({
-          count: multiple ? Math.min(maxCount, 9) : 1,
-          sourceType: capture,
-          sizeType: sizeType,
-          success: function success(res) {return resolve(formatImage(res));},
-          fail: reject });
-
-        break;
-
-      // 只有微信小程序才支持chooseMedia接口
-      case 'media':
-        wx.chooseMedia({
-          count: multiple ? Math.min(maxCount, 9) : 1,
-          sourceType: capture,
-          maxDuration: maxDuration,
-          sizeType: sizeType,
-          camera: camera,
-          success: function success(res) {return resolve(formatMedia(res));},
-          fail: reject });
-
-        break;
-
-      case 'video':
-        uni.chooseVideo({
-          sourceType: capture,
-          compressed: compressed,
-          maxDuration: maxDuration,
-          camera: camera,
-          success: function success(res) {return resolve(formatVideo(res));},
-          fail: reject });
-
-        break;
-
-      // 只有微信小程序才支持chooseMessageFile接口
-      case 'file':
-
-        wx.chooseMessageFile({
-          count: multiple ? maxCount : 1,
-          type: accept,
-          success: function success(res) {return resolve(formatFile(res));},
-          fail: reject });
-
-
-
-
-
-
-
-
-
-
-
-        break;
-
-      default:
-        // 此为保底选项，在accept不为上面任意一项的时候选取全部文件
-
-        wx.chooseMessageFile({
-          count: multiple ? maxCount : 1,
-          type: 'all',
-          success: function success(res) {return resolve(formatFile(res));},
-          fail: reject });}
-
-
-
-
-
-
-
-
-
-
-
-
-  });
-}
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-/* 409 */
-/*!*****************************************************************************************!*\
-  !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-upload/mixin.js ***!
-  \*****************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
-  watch: {
-    // 监听accept的变化，判断是否符合个平台要求
-    // 只有微信小程序才支持选择媒体，文件类型，所以这里做一个判断提示
-    accept: {
-      immediate: true,
-      handler: function handler(val) {
-
-
-
-
-
-
-
-
-
-
-      } } } };exports.default = _default;
-
-/***/ }),
-/* 410 */
-/*!*****************************************************************************************!*\
-  !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-upload/props.js ***!
-  \*****************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
-  props: {
-    // 接受的文件类型, 可选值为all media image file video
-    accept: {
-      type: String,
-      default: uni.$u.props.upload.accept },
-
-    // 	图片或视频拾取模式，当accept为image类型时设置capture可选额外camera可以直接调起摄像头
-    capture: {
-      type: [String, Array],
-      default: uni.$u.props.upload.capture },
-
-    // 当accept为video时生效，是否压缩视频，默认为true
-    compressed: {
-      type: Boolean,
-      default: uni.$u.props.upload.compressed },
-
-    // 当accept为video时生效，可选值为back或front
-    camera: {
-      type: String,
-      default: uni.$u.props.upload.camera },
-
-    // 当accept为video时生效，拍摄视频最长拍摄时间，单位秒
-    maxDuration: {
-      type: Number,
-      default: uni.$u.props.upload.maxDuration },
-
-    // 上传区域的图标，只能内置图标
-    uploadIcon: {
-      type: String,
-      default: uni.$u.props.upload.uploadIcon },
-
-    // 上传区域的图标的颜色，默认
-    uploadIconColor: {
-      type: String,
-      default: uni.$u.props.upload.uploadIconColor },
-
-    // 是否开启文件读取前事件
-    useBeforeRead: {
-      type: Boolean,
-      default: uni.$u.props.upload.useBeforeRead },
-
-    // 读取后的处理函数
-    afterRead: {
-      type: Function,
-      default: null },
-
-    // 读取前的处理函数
-    beforeRead: {
-      type: Function,
-      default: null },
-
-    // 是否显示组件自带的图片预览功能
-    previewFullImage: {
-      type: Boolean,
-      default: uni.$u.props.upload.previewFullImage },
-
-    // 最大上传数量
-    maxCount: {
-      type: [String, Number],
-      default: uni.$u.props.upload.maxCount },
-
-    // 是否启用
-    disabled: {
-      type: Boolean,
-      default: uni.$u.props.upload.disabled },
-
-    // 预览上传的图片时的裁剪模式，和image组件mode属性一致
-    imageMode: {
-      type: String,
-      default: uni.$u.props.upload.imageMode },
-
-    // 标识符，可以在回调函数的第二项参数中获取
-    name: {
-      type: String,
-      default: uni.$u.props.upload.name },
-
-    // 所选的图片的尺寸, 可选值为original compressed
-    sizeType: {
-      type: Array,
-      default: uni.$u.props.upload.sizeType },
-
-    // 是否开启图片多选，部分安卓机型不支持
-    multiple: {
-      type: Boolean,
-      default: uni.$u.props.upload.multiple },
-
-    // 是否展示删除按钮
-    deletable: {
-      type: Boolean,
-      default: uni.$u.props.upload.deletable },
-
-    // 文件大小限制，单位为byte
-    maxSize: {
-      type: [String, Number],
-      default: uni.$u.props.upload.maxSize },
-
-    // 显示已上传的文件列表
-    fileList: {
-      type: Array,
-      default: uni.$u.props.upload.fileList },
-
-    // 上传区域的提示文字
-    uploadText: {
-      type: String,
-      default: uni.$u.props.upload.uploadText },
-
-    // 内部预览图片区域和选择图片按钮的区域宽度
-    width: {
-      type: [String, Number],
-      default: uni.$u.props.upload.width },
-
-    // 内部预览图片区域和选择图片按钮的区域高度
-    height: {
-      type: [String, Number],
-      default: uni.$u.props.upload.height },
-
-    // 是否在上传完成后展示预览图
-    previewImage: {
-      type: Boolean,
-      default: uni.$u.props.upload.previewImage } } };exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-/* 411 */,
-/* 412 */,
-/* 413 */,
-/* 414 */,
-/* 415 */,
-/* 416 */,
-/* 417 */,
-/* 418 */
+/* 469 */,
+/* 470 */,
+/* 471 */,
+/* 472 */,
+/* 473 */,
+/* 474 */,
+/* 475 */,
+/* 476 */,
+/* 477 */,
+/* 478 */,
+/* 479 */,
+/* 480 */,
+/* 481 */,
+/* 482 */,
+/* 483 */,
+/* 484 */,
+/* 485 */,
+/* 486 */,
+/* 487 */,
+/* 488 */,
+/* 489 */,
+/* 490 */,
+/* 491 */,
+/* 492 */,
+/* 493 */,
+/* 494 */,
+/* 495 */,
+/* 496 */,
+/* 497 */
 /*!*********************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/libs/mixin/button.js ***!
   \*********************************************************************************/
@@ -21740,7 +21822,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     openType: String } };exports.default = _default;
 
 /***/ }),
-/* 419 */
+/* 498 */
 /*!***********************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/libs/mixin/openType.js ***!
   \***********************************************************************************/
@@ -21773,7 +21855,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     } } };exports.default = _default;
 
 /***/ }),
-/* 420 */
+/* 499 */
 /*!*****************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-button/props.js ***!
   \*****************************************************************************************/
@@ -21942,14 +22024,437 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 421 */,
-/* 422 */,
-/* 423 */,
-/* 424 */,
-/* 425 */,
-/* 426 */,
-/* 427 */,
-/* 428 */
+/* 500 */,
+/* 501 */,
+/* 502 */,
+/* 503 */,
+/* 504 */,
+/* 505 */,
+/* 506 */,
+/* 507 */
+/*!*****************************************************************************************!*\
+  !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-upload/utils.js ***!
+  \*****************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.chooseFile = chooseFile;function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function pickExclude(obj, keys) {
+  // 某些情况下，type可能会为
+  if (!['[object Object]', '[object File]'].includes(Object.prototype.toString.call(obj))) {
+    return {};
+  }
+  return Object.keys(obj).reduce(function (prev, key) {
+    if (!keys.includes(key)) {
+      prev[key] = obj[key];
+    }
+    return prev;
+  }, {});
+}
+
+function formatImage(res) {
+  return res.tempFiles.map(function (item) {return _objectSpread(_objectSpread({},
+    pickExclude(item, ['path'])), {}, {
+      type: 'image',
+      url: item.path,
+      thumb: item.path,
+      size: item.size });});
+
+
+
+
+}
+
+function formatVideo(res) {
+  return [_objectSpread(_objectSpread({},
+
+  pickExclude(res, ['tempFilePath', 'thumbTempFilePath', 'errMsg'])), {}, {
+    type: 'video',
+    url: res.tempFilePath,
+    thumb: res.thumbTempFilePath,
+    size: res.size })];
+
+
+
+
+
+}
+
+function formatMedia(res) {
+  return res.tempFiles.map(function (item) {return _objectSpread(_objectSpread({},
+    pickExclude(item, ['fileType', 'thumbTempFilePath', 'tempFilePath'])), {}, {
+      type: res.type,
+      url: item.tempFilePath,
+      thumb: res.type === 'video' ? item.thumbTempFilePath : item.tempFilePath,
+      size: item.size });});
+
+}
+
+function formatFile(res) {
+  return res.tempFiles.map(function (item) {return _objectSpread(_objectSpread({},
+    pickExclude(item, ['path'])), {}, {
+      url: item.path,
+      size: item.size });});
+
+
+
+
+
+}
+function chooseFile(_ref)
+
+
+
+
+
+
+
+
+{var accept = _ref.accept,multiple = _ref.multiple,capture = _ref.capture,compressed = _ref.compressed,maxDuration = _ref.maxDuration,sizeType = _ref.sizeType,camera = _ref.camera,maxCount = _ref.maxCount;
+  return new Promise(function (resolve, reject) {
+    switch (accept) {
+      case 'image':
+        uni.chooseImage({
+          count: multiple ? Math.min(maxCount, 9) : 1,
+          sourceType: capture,
+          sizeType: sizeType,
+          success: function success(res) {return resolve(formatImage(res));},
+          fail: reject });
+
+        break;
+
+      // 只有微信小程序才支持chooseMedia接口
+      case 'media':
+        wx.chooseMedia({
+          count: multiple ? Math.min(maxCount, 9) : 1,
+          sourceType: capture,
+          maxDuration: maxDuration,
+          sizeType: sizeType,
+          camera: camera,
+          success: function success(res) {return resolve(formatMedia(res));},
+          fail: reject });
+
+        break;
+
+      case 'video':
+        uni.chooseVideo({
+          sourceType: capture,
+          compressed: compressed,
+          maxDuration: maxDuration,
+          camera: camera,
+          success: function success(res) {return resolve(formatVideo(res));},
+          fail: reject });
+
+        break;
+
+      // 只有微信小程序才支持chooseMessageFile接口
+      case 'file':
+
+        wx.chooseMessageFile({
+          count: multiple ? maxCount : 1,
+          type: accept,
+          success: function success(res) {return resolve(formatFile(res));},
+          fail: reject });
+
+
+
+
+
+
+
+
+
+
+
+        break;
+
+      default:
+        // 此为保底选项，在accept不为上面任意一项的时候选取全部文件
+
+        wx.chooseMessageFile({
+          count: multiple ? maxCount : 1,
+          type: 'all',
+          success: function success(res) {return resolve(formatFile(res));},
+          fail: reject });}
+
+
+
+
+
+
+
+
+
+
+
+
+  });
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+/* 508 */
+/*!*****************************************************************************************!*\
+  !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-upload/mixin.js ***!
+  \*****************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
+  watch: {
+    // 监听accept的变化，判断是否符合个平台要求
+    // 只有微信小程序才支持选择媒体，文件类型，所以这里做一个判断提示
+    accept: {
+      immediate: true,
+      handler: function handler(val) {
+
+
+
+
+
+
+
+
+
+
+      } } } };exports.default = _default;
+
+/***/ }),
+/* 509 */
+/*!*****************************************************************************************!*\
+  !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-upload/props.js ***!
+  \*****************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
+  props: {
+    // 接受的文件类型, 可选值为all media image file video
+    accept: {
+      type: String,
+      default: uni.$u.props.upload.accept },
+
+    // 	图片或视频拾取模式，当accept为image类型时设置capture可选额外camera可以直接调起摄像头
+    capture: {
+      type: [String, Array],
+      default: uni.$u.props.upload.capture },
+
+    // 当accept为video时生效，是否压缩视频，默认为true
+    compressed: {
+      type: Boolean,
+      default: uni.$u.props.upload.compressed },
+
+    // 当accept为video时生效，可选值为back或front
+    camera: {
+      type: String,
+      default: uni.$u.props.upload.camera },
+
+    // 当accept为video时生效，拍摄视频最长拍摄时间，单位秒
+    maxDuration: {
+      type: Number,
+      default: uni.$u.props.upload.maxDuration },
+
+    // 上传区域的图标，只能内置图标
+    uploadIcon: {
+      type: String,
+      default: uni.$u.props.upload.uploadIcon },
+
+    // 上传区域的图标的颜色，默认
+    uploadIconColor: {
+      type: String,
+      default: uni.$u.props.upload.uploadIconColor },
+
+    // 是否开启文件读取前事件
+    useBeforeRead: {
+      type: Boolean,
+      default: uni.$u.props.upload.useBeforeRead },
+
+    // 读取后的处理函数
+    afterRead: {
+      type: Function,
+      default: null },
+
+    // 读取前的处理函数
+    beforeRead: {
+      type: Function,
+      default: null },
+
+    // 是否显示组件自带的图片预览功能
+    previewFullImage: {
+      type: Boolean,
+      default: uni.$u.props.upload.previewFullImage },
+
+    // 最大上传数量
+    maxCount: {
+      type: [String, Number],
+      default: uni.$u.props.upload.maxCount },
+
+    // 是否启用
+    disabled: {
+      type: Boolean,
+      default: uni.$u.props.upload.disabled },
+
+    // 预览上传的图片时的裁剪模式，和image组件mode属性一致
+    imageMode: {
+      type: String,
+      default: uni.$u.props.upload.imageMode },
+
+    // 标识符，可以在回调函数的第二项参数中获取
+    name: {
+      type: String,
+      default: uni.$u.props.upload.name },
+
+    // 所选的图片的尺寸, 可选值为original compressed
+    sizeType: {
+      type: Array,
+      default: uni.$u.props.upload.sizeType },
+
+    // 是否开启图片多选，部分安卓机型不支持
+    multiple: {
+      type: Boolean,
+      default: uni.$u.props.upload.multiple },
+
+    // 是否展示删除按钮
+    deletable: {
+      type: Boolean,
+      default: uni.$u.props.upload.deletable },
+
+    // 文件大小限制，单位为byte
+    maxSize: {
+      type: [String, Number],
+      default: uni.$u.props.upload.maxSize },
+
+    // 显示已上传的文件列表
+    fileList: {
+      type: Array,
+      default: uni.$u.props.upload.fileList },
+
+    // 上传区域的提示文字
+    uploadText: {
+      type: String,
+      default: uni.$u.props.upload.uploadText },
+
+    // 内部预览图片区域和选择图片按钮的区域宽度
+    width: {
+      type: [String, Number],
+      default: uni.$u.props.upload.width },
+
+    // 内部预览图片区域和选择图片按钮的区域高度
+    height: {
+      type: [String, Number],
+      default: uni.$u.props.upload.height },
+
+    // 是否在上传完成后展示预览图
+    previewImage: {
+      type: Boolean,
+      default: uni.$u.props.upload.previewImage } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+/* 510 */,
+/* 511 */,
+/* 512 */,
+/* 513 */,
+/* 514 */,
+/* 515 */,
+/* 516 */,
+/* 517 */
+/*!*****************************************************************************************!*\
+  !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-picker/props.js ***!
+  \*****************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
+  props: {
+    // 是否展示picker弹窗
+    show: {
+      type: Boolean,
+      default: uni.$u.props.picker.show },
+
+    // 是否展示顶部的操作栏
+    showToolbar: {
+      type: Boolean,
+      default: uni.$u.props.picker.showToolbar },
+
+    // 顶部标题
+    title: {
+      type: String,
+      default: uni.$u.props.picker.title },
+
+    // 对象数组，设置每一列的数据
+    columns: {
+      type: Array,
+      default: uni.$u.props.picker.columns },
+
+    // 是否显示加载中状态
+    loading: {
+      type: Boolean,
+      default: uni.$u.props.picker.loading },
+
+    // 各列中，单个选项的高度
+    itemHeight: {
+      type: [String, Number],
+      default: uni.$u.props.picker.itemHeight },
+
+    // 取消按钮的文字
+    cancelText: {
+      type: String,
+      default: uni.$u.props.picker.cancelText },
+
+    // 确认按钮的文字
+    confirmText: {
+      type: String,
+      default: uni.$u.props.picker.confirmText },
+
+    // 取消按钮的颜色
+    cancelColor: {
+      type: String,
+      default: uni.$u.props.picker.cancelColor },
+
+    // 确认按钮的颜色
+    confirmColor: {
+      type: String,
+      default: uni.$u.props.picker.confirmColor },
+
+    // 每列中可见选项的数量
+    visibleItemCount: {
+      type: [String, Number],
+      default: uni.$u.props.picker.visibleItemCount },
+
+    // 选项对象中，需要展示的属性键名
+    keyName: {
+      type: String,
+      default: uni.$u.props.picker.keyName },
+
+    // 是否允许点击遮罩关闭选择器
+    closeOnClickOverlay: {
+      type: Boolean,
+      default: uni.$u.props.picker.closeOnClickOverlay },
+
+    // 各列的默认索引
+    defaultIndex: {
+      type: Array,
+      default: uni.$u.props.picker.defaultIndex },
+
+    // 是否在手指松开时立即触发 change 事件。若不开启则会在滚动动画结束后触发 change 事件，只在微信2.21.1及以上有效
+    immediateChange: {
+      type: Boolean,
+      default: uni.$u.props.picker.immediateChange } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+/* 518 */,
+/* 519 */,
+/* 520 */,
+/* 521 */,
+/* 522 */,
+/* 523 */,
+/* 524 */,
+/* 525 */
 /*!****************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-popup/props.js ***!
   \****************************************************************************************/
@@ -22036,14 +22541,14 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 429 */,
-/* 430 */,
-/* 431 */,
-/* 432 */,
-/* 433 */,
-/* 434 */,
-/* 435 */,
-/* 436 */
+/* 526 */,
+/* 527 */,
+/* 528 */,
+/* 529 */,
+/* 530 */,
+/* 531 */,
+/* 532 */,
+/* 533 */
 /*!***********************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-action-sheet/props.js ***!
   \***********************************************************************************************/
@@ -22105,14 +22610,21 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 437 */,
-/* 438 */,
-/* 439 */,
-/* 440 */,
-/* 441 */,
-/* 442 */,
-/* 443 */,
-/* 444 */
+/* 534 */,
+/* 535 */,
+/* 536 */,
+/* 537 */,
+/* 538 */,
+/* 539 */,
+/* 540 */,
+/* 541 */,
+/* 542 */,
+/* 543 */,
+/* 544 */,
+/* 545 */,
+/* 546 */,
+/* 547 */,
+/* 548 */
 /*!**************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-gap/props.js ***!
   \**************************************************************************************/
@@ -22144,35 +22656,35 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 445 */,
-/* 446 */,
-/* 447 */,
-/* 448 */,
-/* 449 */,
-/* 450 */,
-/* 451 */,
-/* 452 */,
-/* 453 */,
-/* 454 */,
-/* 455 */,
-/* 456 */,
-/* 457 */,
-/* 458 */,
-/* 459 */,
-/* 460 */,
-/* 461 */,
-/* 462 */,
-/* 463 */,
-/* 464 */,
-/* 465 */,
-/* 466 */,
-/* 467 */,
-/* 468 */,
-/* 469 */,
-/* 470 */,
-/* 471 */,
-/* 472 */,
-/* 473 */
+/* 549 */,
+/* 550 */,
+/* 551 */,
+/* 552 */,
+/* 553 */,
+/* 554 */,
+/* 555 */,
+/* 556 */,
+/* 557 */,
+/* 558 */,
+/* 559 */,
+/* 560 */,
+/* 561 */,
+/* 562 */,
+/* 563 */,
+/* 564 */,
+/* 565 */,
+/* 566 */,
+/* 567 */,
+/* 568 */,
+/* 569 */,
+/* 570 */,
+/* 571 */,
+/* 572 */,
+/* 573 */,
+/* 574 */,
+/* 575 */,
+/* 576 */,
+/* 577 */
 /*!****************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-input/props.js ***!
   \****************************************************************************************/
@@ -22367,16 +22879,23 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 474 */,
-/* 475 */,
-/* 476 */,
-/* 477 */,
-/* 478 */,
-/* 479 */,
-/* 480 */,
-/* 481 */
+/* 578 */,
+/* 579 */,
+/* 580 */,
+/* 581 */,
+/* 582 */,
+/* 583 */,
+/* 584 */,
+/* 585 */,
+/* 586 */,
+/* 587 */,
+/* 588 */,
+/* 589 */,
+/* 590 */,
+/* 591 */,
+/* 592 */
 /*!*****************************************************************************************!*\
-  !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-swiper/props.js ***!
+  !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-sticky/props.js ***!
   \*****************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -22384,151 +22903,59 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
   props: {
-    // 列表数组，元素可为字符串，如为对象可通过keyName指定目标属性名
-    list: {
-      type: Array,
-      default: uni.$u.props.swiper.list },
+    // 吸顶容器到顶部某个距离的时候，进行吸顶，在H5平台，NavigationBar为44px
+    offsetTop: {
+      type: [String, Number],
+      default: uni.$u.props.sticky.offsetTop },
 
-    // 是否显示面板指示器
-    indicator: {
+    // 自定义导航栏的高度
+    customNavHeight: {
+      type: [String, Number],
+
+
+
+
+
+      default: uni.$u.props.sticky.customNavHeight },
+
+
+    // 是否开启吸顶功能
+    disabled: {
       type: Boolean,
-      default: uni.$u.props.swiper.indicator },
+      default: uni.$u.props.sticky.disabled },
 
-    // 指示器非激活颜色
-    indicatorActiveColor: {
-      type: String,
-      default: uni.$u.props.swiper.indicatorActiveColor },
-
-    // 指示器的激活颜色
-    indicatorInactiveColor: {
-      type: String,
-      default: uni.$u.props.swiper.indicatorInactiveColor },
-
-    // 指示器样式，可通过bottom，left，right进行定位
-    indicatorStyle: {
-      type: [String, Object],
-      default: uni.$u.props.swiper.indicatorStyle },
-
-    // 指示器模式，line-线型，dot-点型
-    indicatorMode: {
-      type: String,
-      default: uni.$u.props.swiper.indicatorMode },
-
-    // 是否自动切换
-    autoplay: {
-      type: Boolean,
-      default: uni.$u.props.swiper.autoplay },
-
-    // 当前所在滑块的 index
-    current: {
-      type: [String, Number],
-      default: uni.$u.props.swiper.current },
-
-    // 当前所在滑块的 item-id ，不能与 current 被同时指定
-    currentItemId: {
-      type: String,
-      default: uni.$u.props.swiper.currentItemId },
-
-    // 滑块自动切换时间间隔
-    interval: {
-      type: [String, Number],
-      default: uni.$u.props.swiper.interval },
-
-    // 滑块切换过程所需时间
-    duration: {
-      type: [String, Number],
-      default: uni.$u.props.swiper.duration },
-
-    // 播放到末尾后是否重新回到开头
-    circular: {
-      type: Boolean,
-      default: uni.$u.props.swiper.circular },
-
-    // 前边距，可用于露出前一项的一小部分，nvue和支付宝不支持
-    previousMargin: {
-      type: [String, Number],
-      default: uni.$u.props.swiper.previousMargin },
-
-    // 后边距，可用于露出后一项的一小部分，nvue和支付宝不支持
-    nextMargin: {
-      type: [String, Number],
-      default: uni.$u.props.swiper.nextMargin },
-
-    // 当开启时，会根据滑动速度，连续滑动多屏，支付宝不支持
-    acceleration: {
-      type: Boolean,
-      default: uni.$u.props.swiper.acceleration },
-
-    // 同时显示的滑块数量，nvue、支付宝小程序不支持
-    displayMultipleItems: {
-      type: Number,
-      default: uni.$u.props.swiper.displayMultipleItems },
-
-    // 指定swiper切换缓动动画类型，有效值：default、linear、easeInCubic、easeOutCubic、easeInOutCubic
-    // 只对微信小程序有效
-    easingFunction: {
-      type: String,
-      default: uni.$u.props.swiper.easingFunction },
-
-    // list数组中指定对象的目标属性名
-    keyName: {
-      type: String,
-      default: uni.$u.props.swiper.keyName },
-
-    // 图片的裁剪模式
-    imgMode: {
-      type: String,
-      default: uni.$u.props.swiper.imgMode },
-
-    // 组件高度
-    height: {
-      type: [String, Number],
-      default: uni.$u.props.swiper.height },
-
-    // 背景颜色
+    // 吸顶区域的背景颜色
     bgColor: {
       type: String,
-      default: uni.$u.props.swiper.bgColor },
+      default: uni.$u.props.sticky.bgColor },
 
-    // 组件圆角，数值或带单位的字符串
-    radius: {
+    // z-index值
+    zIndex: {
       type: [String, Number],
-      default: uni.$u.props.swiper.radius },
+      default: uni.$u.props.sticky.zIndex },
 
-    // 是否加载中
-    loading: {
-      type: Boolean,
-      default: uni.$u.props.swiper.loading },
-
-    // 是否显示标题，要求数组对象中有title属性
-    showTitle: {
-      type: Boolean,
-      default: uni.$u.props.swiper.showTitle } } };exports.default = _default;
+    // 列表中的索引值
+    index: {
+      type: [String, Number],
+      default: uni.$u.props.sticky.index } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 482 */,
-/* 483 */,
-/* 484 */,
-/* 485 */,
-/* 486 */,
-/* 487 */,
-/* 488 */,
-/* 489 */,
-/* 490 */,
-/* 491 */,
-/* 492 */,
-/* 493 */,
-/* 494 */,
-/* 495 */,
-/* 496 */,
-/* 497 */,
-/* 498 */,
-/* 499 */,
-/* 500 */,
-/* 501 */,
-/* 502 */,
-/* 503 */
+/* 593 */,
+/* 594 */,
+/* 595 */,
+/* 596 */,
+/* 597 */,
+/* 598 */,
+/* 599 */,
+/* 600 */,
+/* 601 */,
+/* 602 */,
+/* 603 */,
+/* 604 */,
+/* 605 */,
+/* 606 */,
+/* 607 */
 /*!*********************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/utils/lib/time.js ***!
   \*********************************************************/
@@ -22629,14 +23056,14 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   } };exports.default = _default;
 
 /***/ }),
-/* 504 */,
-/* 505 */,
-/* 506 */,
-/* 507 */,
-/* 508 */,
-/* 509 */,
-/* 510 */,
-/* 511 */
+/* 608 */,
+/* 609 */,
+/* 610 */,
+/* 611 */,
+/* 612 */,
+/* 613 */,
+/* 614 */,
+/* 615 */
 /*!*********************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-cell-group/props.js ***!
   \*********************************************************************************************/
@@ -22658,14 +23085,14 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 512 */,
-/* 513 */,
-/* 514 */,
-/* 515 */,
-/* 516 */,
-/* 517 */,
-/* 518 */,
-/* 519 */
+/* 616 */,
+/* 617 */,
+/* 618 */,
+/* 619 */,
+/* 620 */,
+/* 621 */,
+/* 622 */,
+/* 623 */
 /*!***************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-cell/props.js ***!
   \***************************************************************************************/
@@ -22783,14 +23210,14 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 520 */,
-/* 521 */,
-/* 522 */,
-/* 523 */,
-/* 524 */,
-/* 525 */,
-/* 526 */,
-/* 527 */
+/* 624 */,
+/* 625 */,
+/* 626 */,
+/* 627 */,
+/* 628 */,
+/* 629 */,
+/* 630 */,
+/* 631 */
 /*!****************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-modal/props.js ***!
   \****************************************************************************************/
@@ -22882,19 +23309,19 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 528 */,
-/* 529 */,
-/* 530 */,
-/* 531 */,
-/* 532 */,
-/* 533 */,
-/* 534 */,
-/* 535 */,
-/* 536 */,
-/* 537 */,
-/* 538 */,
-/* 539 */,
-/* 540 */
+/* 632 */,
+/* 633 */,
+/* 634 */,
+/* 635 */,
+/* 636 */,
+/* 637 */,
+/* 638 */,
+/* 639 */,
+/* 640 */,
+/* 641 */,
+/* 642 */,
+/* 643 */,
+/* 644 */
 /*!***************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-code/props.js ***!
   \***************************************************************************************/
@@ -22936,14 +23363,14 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 541 */,
-/* 542 */,
-/* 543 */,
-/* 544 */,
-/* 545 */,
-/* 546 */,
-/* 547 */,
-/* 548 */
+/* 645 */,
+/* 646 */,
+/* 647 */,
+/* 648 */,
+/* 649 */,
+/* 650 */,
+/* 651 */,
+/* 652 */
 /*!********************************************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uni-datetime-picker/components/uni-datetime-picker/i18n/index.js ***!
   \********************************************************************************************************************/
@@ -22951,16 +23378,16 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _en = _interopRequireDefault(__webpack_require__(/*! ./en.json */ 549));
-var _zhHans = _interopRequireDefault(__webpack_require__(/*! ./zh-Hans.json */ 550));
-var _zhHant = _interopRequireDefault(__webpack_require__(/*! ./zh-Hant.json */ 551));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var _default =
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _en = _interopRequireDefault(__webpack_require__(/*! ./en.json */ 653));
+var _zhHans = _interopRequireDefault(__webpack_require__(/*! ./zh-Hans.json */ 654));
+var _zhHant = _interopRequireDefault(__webpack_require__(/*! ./zh-Hant.json */ 655));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var _default =
 {
   en: _en.default,
   'zh-Hans': _zhHans.default,
   'zh-Hant': _zhHant.default };exports.default = _default;
 
 /***/ }),
-/* 549 */
+/* 653 */
 /*!*******************************************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uni-datetime-picker/components/uni-datetime-picker/i18n/en.json ***!
   \*******************************************************************************************************************/
@@ -22970,7 +23397,7 @@ var _zhHant = _interopRequireDefault(__webpack_require__(/*! ./zh-Hant.json */ 5
 module.exports = JSON.parse("{\"uni-datetime-picker.selectDate\":\"select date\",\"uni-datetime-picker.selectTime\":\"select time\",\"uni-datetime-picker.selectDateTime\":\"select datetime\",\"uni-datetime-picker.startDate\":\"start date\",\"uni-datetime-picker.endDate\":\"end date\",\"uni-datetime-picker.startTime\":\"start time\",\"uni-datetime-picker.endTime\":\"end time\",\"uni-datetime-picker.ok\":\"ok\",\"uni-datetime-picker.clear\":\"clear\",\"uni-datetime-picker.cancel\":\"cancel\",\"uni-datetime-picker.year\":\"-\",\"uni-datetime-picker.month\":\"\",\"uni-calender.MON\":\"MON\",\"uni-calender.TUE\":\"TUE\",\"uni-calender.WED\":\"WED\",\"uni-calender.THU\":\"THU\",\"uni-calender.FRI\":\"FRI\",\"uni-calender.SAT\":\"SAT\",\"uni-calender.SUN\":\"SUN\",\"uni-calender.confirm\":\"confirm\"}");
 
 /***/ }),
-/* 550 */
+/* 654 */
 /*!************************************************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uni-datetime-picker/components/uni-datetime-picker/i18n/zh-Hans.json ***!
   \************************************************************************************************************************/
@@ -22980,7 +23407,7 @@ module.exports = JSON.parse("{\"uni-datetime-picker.selectDate\":\"select date\"
 module.exports = JSON.parse("{\"uni-datetime-picker.selectDate\":\"选择日期\",\"uni-datetime-picker.selectTime\":\"选择时间\",\"uni-datetime-picker.selectDateTime\":\"选择日期时间\",\"uni-datetime-picker.startDate\":\"开始日期\",\"uni-datetime-picker.endDate\":\"结束日期\",\"uni-datetime-picker.startTime\":\"开始时间\",\"uni-datetime-picker.endTime\":\"结束时间\",\"uni-datetime-picker.ok\":\"确定\",\"uni-datetime-picker.clear\":\"清除\",\"uni-datetime-picker.cancel\":\"取消\",\"uni-datetime-picker.year\":\"年\",\"uni-datetime-picker.month\":\"月\",\"uni-calender.SUN\":\"日\",\"uni-calender.MON\":\"一\",\"uni-calender.TUE\":\"二\",\"uni-calender.WED\":\"三\",\"uni-calender.THU\":\"四\",\"uni-calender.FRI\":\"五\",\"uni-calender.SAT\":\"六\",\"uni-calender.confirm\":\"确认\"}");
 
 /***/ }),
-/* 551 */
+/* 655 */
 /*!************************************************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uni-datetime-picker/components/uni-datetime-picker/i18n/zh-Hant.json ***!
   \************************************************************************************************************************/
@@ -22990,21 +23417,21 @@ module.exports = JSON.parse("{\"uni-datetime-picker.selectDate\":\"选择日期\
 module.exports = JSON.parse("{\"uni-datetime-picker.selectDate\":\"選擇日期\",\"uni-datetime-picker.selectTime\":\"選擇時間\",\"uni-datetime-picker.selectDateTime\":\"選擇日期時間\",\"uni-datetime-picker.startDate\":\"開始日期\",\"uni-datetime-picker.endDate\":\"結束日期\",\"uni-datetime-picker.startTime\":\"開始时间\",\"uni-datetime-picker.endTime\":\"結束时间\",\"uni-datetime-picker.ok\":\"確定\",\"uni-datetime-picker.clear\":\"清除\",\"uni-datetime-picker.cancel\":\"取消\",\"uni-datetime-picker.year\":\"年\",\"uni-datetime-picker.month\":\"月\",\"uni-calender.SUN\":\"日\",\"uni-calender.MON\":\"一\",\"uni-calender.TUE\":\"二\",\"uni-calender.WED\":\"三\",\"uni-calender.THU\":\"四\",\"uni-calender.FRI\":\"五\",\"uni-calender.SAT\":\"六\",\"uni-calender.confirm\":\"確認\"}");
 
 /***/ }),
-/* 552 */,
-/* 553 */,
-/* 554 */,
-/* 555 */,
-/* 556 */,
-/* 557 */,
-/* 558 */,
-/* 559 */,
-/* 560 */,
-/* 561 */,
-/* 562 */,
-/* 563 */,
-/* 564 */,
-/* 565 */,
-/* 566 */
+/* 656 */,
+/* 657 */,
+/* 658 */,
+/* 659 */,
+/* 660 */,
+/* 661 */,
+/* 662 */,
+/* 663 */,
+/* 664 */,
+/* 665 */,
+/* 666 */,
+/* 667 */,
+/* 668 */,
+/* 669 */,
+/* 670 */
 /*!*******************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uni-popup/components/uni-popup/popup.js ***!
   \*******************************************************************************************/
@@ -23038,7 +23465,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     } } };exports.default = _default;
 
 /***/ }),
-/* 567 */
+/* 671 */
 /*!************************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uni-popup/components/uni-popup/i18n/index.js ***!
   \************************************************************************************************/
@@ -23046,16 +23473,16 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _en = _interopRequireDefault(__webpack_require__(/*! ./en.json */ 568));
-var _zhHans = _interopRequireDefault(__webpack_require__(/*! ./zh-Hans.json */ 569));
-var _zhHant = _interopRequireDefault(__webpack_require__(/*! ./zh-Hant.json */ 570));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var _default =
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _en = _interopRequireDefault(__webpack_require__(/*! ./en.json */ 672));
+var _zhHans = _interopRequireDefault(__webpack_require__(/*! ./zh-Hans.json */ 673));
+var _zhHant = _interopRequireDefault(__webpack_require__(/*! ./zh-Hant.json */ 674));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var _default =
 {
   en: _en.default,
   'zh-Hans': _zhHans.default,
   'zh-Hant': _zhHant.default };exports.default = _default;
 
 /***/ }),
-/* 568 */
+/* 672 */
 /*!***********************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uni-popup/components/uni-popup/i18n/en.json ***!
   \***********************************************************************************************/
@@ -23065,7 +23492,7 @@ var _zhHant = _interopRequireDefault(__webpack_require__(/*! ./zh-Hant.json */ 5
 module.exports = JSON.parse("{\"uni-popup.cancel\":\"cancel\",\"uni-popup.ok\":\"ok\",\"uni-popup.placeholder\":\"pleace enter\",\"uni-popup.title\":\"Hint\",\"uni-popup.shareTitle\":\"Share to\"}");
 
 /***/ }),
-/* 569 */
+/* 673 */
 /*!****************************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uni-popup/components/uni-popup/i18n/zh-Hans.json ***!
   \****************************************************************************************************/
@@ -23075,7 +23502,7 @@ module.exports = JSON.parse("{\"uni-popup.cancel\":\"cancel\",\"uni-popup.ok\":\
 module.exports = JSON.parse("{\"uni-popup.cancel\":\"取消\",\"uni-popup.ok\":\"确定\",\"uni-popup.placeholder\":\"请输入\",\"uni-popup.title\":\"提示\",\"uni-popup.shareTitle\":\"分享到\"}");
 
 /***/ }),
-/* 570 */
+/* 674 */
 /*!****************************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uni-popup/components/uni-popup/i18n/zh-Hant.json ***!
   \****************************************************************************************************/
@@ -23085,14 +23512,14 @@ module.exports = JSON.parse("{\"uni-popup.cancel\":\"取消\",\"uni-popup.ok\":\
 module.exports = JSON.parse("{\"uni-popup.cancel\":\"取消\",\"uni-popup.ok\":\"確定\",\"uni-popup.placeholder\":\"請輸入\",\"uni-popup.title\":\"提示\",\"uni-popup.shareTitle\":\"分享到\"}");
 
 /***/ }),
-/* 571 */,
-/* 572 */,
-/* 573 */,
-/* 574 */,
-/* 575 */,
-/* 576 */,
-/* 577 */,
-/* 578 */
+/* 675 */,
+/* 676 */,
+/* 677 */,
+/* 678 */,
+/* 679 */,
+/* 680 */,
+/* 681 */,
+/* 682 */
 /*!************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/components/city-picker/city-data/province.js ***!
   \************************************************************************************/
@@ -23241,7 +23668,7 @@ var provinceData = [{
 provinceData;exports.default = _default;
 
 /***/ }),
-/* 579 */
+/* 683 */
 /*!********************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/components/city-picker/city-data/city.js ***!
   \********************************************************************************/
@@ -24754,7 +25181,7 @@ var cityData = [
 cityData;exports.default = _default;
 
 /***/ }),
-/* 580 */
+/* 684 */
 /*!********************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/components/city-picker/city-data/area.js ***!
   \********************************************************************************/
@@ -37306,14 +37733,14 @@ var areaData = [
 areaData;exports.default = _default;
 
 /***/ }),
-/* 581 */,
-/* 582 */,
-/* 583 */,
-/* 584 */,
-/* 585 */,
-/* 586 */,
-/* 587 */,
-/* 588 */
+/* 685 */,
+/* 686 */,
+/* 687 */,
+/* 688 */,
+/* 689 */,
+/* 690 */,
+/* 691 */,
+/* 692 */
 /*!*******************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-collapse/props.js ***!
   \*******************************************************************************************/
@@ -37340,14 +37767,14 @@ areaData;exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 589 */,
-/* 590 */,
-/* 591 */,
-/* 592 */,
-/* 593 */,
-/* 594 */,
-/* 595 */,
-/* 596 */
+/* 693 */,
+/* 694 */,
+/* 695 */,
+/* 696 */,
+/* 697 */,
+/* 698 */,
+/* 699 */,
+/* 700 */
 /*!************************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-collapse-item/props.js ***!
   \************************************************************************************************/
@@ -37414,21 +37841,21 @@ areaData;exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 597 */,
-/* 598 */,
-/* 599 */,
-/* 600 */,
-/* 601 */,
-/* 602 */,
-/* 603 */,
-/* 604 */,
-/* 605 */,
-/* 606 */,
-/* 607 */,
-/* 608 */,
-/* 609 */,
-/* 610 */,
-/* 611 */
+/* 701 */,
+/* 702 */,
+/* 703 */,
+/* 704 */,
+/* 705 */,
+/* 706 */,
+/* 707 */,
+/* 708 */,
+/* 709 */,
+/* 710 */,
+/* 711 */,
+/* 712 */,
+/* 713 */,
+/* 714 */,
+/* 715 */
 /*!***************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-line/props.js ***!
   \***************************************************************************************/
@@ -37469,21 +37896,33 @@ areaData;exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 612 */,
-/* 613 */,
-/* 614 */,
-/* 615 */,
-/* 616 */,
-/* 617 */,
-/* 618 */,
-/* 619 */,
-/* 620 */,
-/* 621 */,
-/* 622 */,
-/* 623 */,
-/* 624 */,
-/* 625 */,
-/* 626 */
+/* 716 */,
+/* 717 */,
+/* 718 */,
+/* 719 */,
+/* 720 */,
+/* 721 */,
+/* 722 */,
+/* 723 */,
+/* 724 */,
+/* 725 */,
+/* 726 */,
+/* 727 */,
+/* 728 */,
+/* 729 */,
+/* 730 */,
+/* 731 */,
+/* 732 */,
+/* 733 */,
+/* 734 */,
+/* 735 */,
+/* 736 */,
+/* 737 */,
+/* 738 */,
+/* 739 */,
+/* 740 */,
+/* 741 */,
+/* 742 */
 /*!*********************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-status-bar/props.js ***!
   \*********************************************************************************************/
@@ -37499,14 +37938,88 @@ areaData;exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 627 */,
-/* 628 */,
-/* 629 */,
-/* 630 */,
-/* 631 */,
-/* 632 */,
-/* 633 */,
-/* 634 */
+/* 743 */,
+/* 744 */,
+/* 745 */,
+/* 746 */,
+/* 747 */,
+/* 748 */,
+/* 749 */,
+/* 750 */
+/*!***********************************************************************************************!*\
+  !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-loading-icon/props.js ***!
+  \***********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
+  props: {
+    // 是否显示组件
+    show: {
+      type: Boolean,
+      default: uni.$u.props.loadingIcon.show },
+
+    // 颜色
+    color: {
+      type: String,
+      default: uni.$u.props.loadingIcon.color },
+
+    // 提示文字颜色
+    textColor: {
+      type: String,
+      default: uni.$u.props.loadingIcon.textColor },
+
+    // 文字和图标是否垂直排列
+    vertical: {
+      type: Boolean,
+      default: uni.$u.props.loadingIcon.vertical },
+
+    // 模式选择，circle-圆形，spinner-花朵形，semicircle-半圆形
+    mode: {
+      type: String,
+      default: uni.$u.props.loadingIcon.mode },
+
+    // 图标大小，单位默认px
+    size: {
+      type: [String, Number],
+      default: uni.$u.props.loadingIcon.size },
+
+    // 文字大小
+    textSize: {
+      type: [String, Number],
+      default: uni.$u.props.loadingIcon.textSize },
+
+    // 文字内容
+    text: {
+      type: [String, Number],
+      default: uni.$u.props.loadingIcon.text },
+
+    // 动画模式
+    timingFunction: {
+      type: String,
+      default: uni.$u.props.loadingIcon.timingFunction },
+
+    // 动画执行周期时间
+    duration: {
+      type: [String, Number],
+      default: uni.$u.props.loadingIcon.duration },
+
+    // mode=circle时的暗边颜色
+    inactiveColor: {
+      type: String,
+      default: uni.$u.props.loadingIcon.inactiveColor } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+/* 751 */,
+/* 752 */,
+/* 753 */,
+/* 754 */,
+/* 755 */,
+/* 756 */,
+/* 757 */,
+/* 758 */
 /*!****************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-badge/props.js ***!
   \****************************************************************************************/
@@ -37586,189 +38099,14 @@ areaData;exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 635 */,
-/* 636 */,
-/* 637 */,
-/* 638 */,
-/* 639 */,
-/* 640 */,
-/* 641 */,
-/* 642 */
-/*!***********************************************************************************************!*\
-  !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-loading-icon/props.js ***!
-  \***********************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
-  props: {
-    // 是否显示组件
-    show: {
-      type: Boolean,
-      default: uni.$u.props.loadingIcon.show },
-
-    // 颜色
-    color: {
-      type: String,
-      default: uni.$u.props.loadingIcon.color },
-
-    // 提示文字颜色
-    textColor: {
-      type: String,
-      default: uni.$u.props.loadingIcon.textColor },
-
-    // 文字和图标是否垂直排列
-    vertical: {
-      type: Boolean,
-      default: uni.$u.props.loadingIcon.vertical },
-
-    // 模式选择，circle-圆形，spinner-花朵形，semicircle-半圆形
-    mode: {
-      type: String,
-      default: uni.$u.props.loadingIcon.mode },
-
-    // 图标大小，单位默认px
-    size: {
-      type: [String, Number],
-      default: uni.$u.props.loadingIcon.size },
-
-    // 文字大小
-    textSize: {
-      type: [String, Number],
-      default: uni.$u.props.loadingIcon.textSize },
-
-    // 文字内容
-    text: {
-      type: [String, Number],
-      default: uni.$u.props.loadingIcon.text },
-
-    // 动画模式
-    timingFunction: {
-      type: String,
-      default: uni.$u.props.loadingIcon.timingFunction },
-
-    // 动画执行周期时间
-    duration: {
-      type: [String, Number],
-      default: uni.$u.props.loadingIcon.duration },
-
-    // mode=circle时的暗边颜色
-    inactiveColor: {
-      type: String,
-      default: uni.$u.props.loadingIcon.inactiveColor } } };exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-/* 643 */,
-/* 644 */,
-/* 645 */,
-/* 646 */,
-/* 647 */,
-/* 648 */,
-/* 649 */,
-/* 650 */
-/*!***************************************************************************************!*\
-  !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-text/value.js ***!
-  \***************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
-  computed: {
-    // 经处理后需要显示的值
-    value: function value() {var
-
-      text =
-
-
-
-      this.text,mode = this.mode,format = this.format,href = this.href;
-      // 价格类型
-      if (mode === 'price') {
-        // 如果text不为金额进行提示
-        if (!/^\d+(\.\d+)?$/.test(text)) {
-          uni.$u.error('金额模式下，text参数需要为金额格式');
-        }
-        // 进行格式化，判断用户传入的format参数为正则，或者函数，如果没有传入format，则使用默认的金额格式化处理
-        if (uni.$u.test.func(format)) {
-          // 如果用户传入的是函数，使用函数格式化
-          return format(text);
-        }
-        // 如果format非正则，非函数，则使用默认的金额格式化方法进行操作
-        return uni.$u.priceFormat(text, 2);
-      }if (mode === 'date') {
-        // 判断是否合法的日期或者时间戳
-        !uni.$u.test.date(text) && uni.$u.error('日期模式下，text参数需要为日期或时间戳格式');
-        // 进行格式化，判断用户传入的format参数为正则，或者函数，如果没有传入format，则使用默认的格式化处理
-        if (uni.$u.test.func(format)) {
-          // 如果用户传入的是函数，使用函数格式化
-          return format(text);
-        }if (format) {
-          // 如果format非正则，非函数，则使用默认的时间格式化方法进行操作
-          return uni.$u.timeFormat(text, format);
-        }
-        // 如果没有设置format，则设置为默认的时间格式化形式
-        return uni.$u.timeFormat(text, 'yyyy-mm-dd');
-      }if (mode === 'phone') {
-        // 判断是否合法的手机号
-        // !uni.$u.test.mobile(text) && uni.$u.error('手机号模式下，text参数需要为手机号码格式')
-        if (uni.$u.test.func(format)) {
-          // 如果用户传入的是函数，使用函数格式化
-          return format(text);
-        }if (format === 'encrypt') {
-          // 如果format为encrypt，则将手机号进行星号加密处理
-          return "".concat(text.substr(0, 3), "****").concat(text.substr(7));
-        }
-        return text;
-      }if (mode === 'name') {
-        // 判断是否合法的字符粗
-        !(typeof text === 'string') && uni.$u.error('姓名模式下，text参数需要为字符串格式');
-        if (uni.$u.test.func(format)) {
-          // 如果用户传入的是函数，使用函数格式化
-          return format(text);
-        }if (format === 'encrypt') {
-          // 如果format为encrypt，则将姓名进行星号加密处理
-          return this.formatName(text);
-        }
-        return text;
-      }if (mode === 'link') {
-        // 判断是否合法的字符粗
-        !uni.$u.test.url(href) && uni.$u.error('超链接模式下，href参数需要为URL格式');
-        return text;
-      }
-      return text;
-    } },
-
-  methods: {
-    // 默认的姓名脱敏规则
-    formatName: function formatName(name) {
-      var value = '';
-      if (name.length === 2) {
-        value = name.substr(0, 1) + '*';
-      } else if (name.length > 2) {
-        var char = '';
-        for (var i = 0, len = name.length - 2; i < len; i++) {
-          char += '*';
-        }
-        value = name.substr(0, 1) + char + name.substr(-1, 1);
-      } else {
-        value = name;
-      }
-      return value;
-    } } };exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-/* 651 */,
-/* 652 */,
-/* 653 */,
-/* 654 */,
-/* 655 */,
-/* 656 */,
-/* 657 */,
-/* 658 */
+/* 759 */,
+/* 760 */,
+/* 761 */,
+/* 762 */,
+/* 763 */,
+/* 764 */,
+/* 765 */,
+/* 766 */
 /*!******************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-overlay/props.js ***!
   \******************************************************************************************/
@@ -37800,14 +38138,63 @@ areaData;exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 659 */,
-/* 660 */,
-/* 661 */,
-/* 662 */,
-/* 663 */,
-/* 664 */,
-/* 665 */,
-/* 666 */
+/* 767 */,
+/* 768 */,
+/* 769 */,
+/* 770 */,
+/* 771 */,
+/* 772 */,
+/* 773 */,
+/* 774 */
+/*!******************************************************************************************!*\
+  !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-toolbar/props.js ***!
+  \******************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
+  props: {
+    // 是否展示工具条
+    show: {
+      type: Boolean,
+      default: uni.$u.props.toolbar.show },
+
+    // 取消按钮的文字
+    cancelText: {
+      type: String,
+      default: uni.$u.props.toolbar.cancelText },
+
+    // 确认按钮的文字
+    confirmText: {
+      type: String,
+      default: uni.$u.props.toolbar.confirmText },
+
+    // 取消按钮的颜色
+    cancelColor: {
+      type: String,
+      default: uni.$u.props.toolbar.cancelColor },
+
+    // 确认按钮的颜色
+    confirmColor: {
+      type: String,
+      default: uni.$u.props.toolbar.confirmColor },
+
+    // 标题文字
+    title: {
+      type: String,
+      default: uni.$u.props.toolbar.title } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+/* 775 */,
+/* 776 */,
+/* 777 */,
+/* 778 */,
+/* 779 */,
+/* 780 */,
+/* 781 */,
+/* 782 */
 /*!*********************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-transition/props.js ***!
   \*********************************************************************************************/
@@ -37839,7 +38226,7 @@ areaData;exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 667 */
+/* 783 */
 /*!**************************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-transition/transition.js ***!
   \**************************************************************************************************/
@@ -37850,7 +38237,7 @@ areaData;exports.default = _default;
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 34));
 
 
-var _nvueAniMap = _interopRequireDefault(__webpack_require__(/*! ./nvue.ani-map.js */ 668));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};} // 定义一个一定时间后自动成功的promise，让调用nextTick方法处，进入下一个then方法
+var _nvueAniMap = _interopRequireDefault(__webpack_require__(/*! ./nvue.ani-map.js */ 784));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};} // 定义一个一定时间后自动成功的promise，让调用nextTick方法处，进入下一个then方法
 var nextTick = function nextTick() {return new Promise(function (resolve) {return setTimeout(resolve, 1000 / 50);});}; // nvue动画模块实现细节抽离在外部文件
 
 // 定义类名，通过给元素动态切换类名，赋予元素一定的css动画样式
@@ -38004,7 +38391,7 @@ var getClassNames = function getClassNames(name) {return {
     } } };exports.default = _default;
 
 /***/ }),
-/* 668 */
+/* 784 */
 /*!****************************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-transition/nvue.ani-map.js ***!
   \****************************************************************************************************/
@@ -38080,14 +38467,14 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     'leave-to': { opacity: 0, transform: 'scale(0.95)' } } };exports.default = _default;
 
 /***/ }),
-/* 669 */,
-/* 670 */,
-/* 671 */,
-/* 672 */,
-/* 673 */,
-/* 674 */,
-/* 675 */,
-/* 676 */
+/* 785 */,
+/* 786 */,
+/* 787 */,
+/* 788 */,
+/* 789 */,
+/* 790 */,
+/* 791 */,
+/* 792 */
 /*!**********************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-safe-bottom/props.js ***!
   \**********************************************************************************************/
@@ -38099,58 +38486,14 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   props: {} };exports.default = _default;
 
 /***/ }),
-/* 677 */,
-/* 678 */,
-/* 679 */,
-/* 680 */,
-/* 681 */,
-/* 682 */,
-/* 683 */,
-/* 684 */
-/*!***************************************************************************************************!*\
-  !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-swiper-indicator/props.js ***!
-  \***************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
-  props: {
-    // 轮播的长度
-    length: {
-      type: [String, Number],
-      default: uni.$u.props.swiperIndicator.length },
-
-    // 当前处于活动状态的轮播的索引
-    current: {
-      type: [String, Number],
-      default: uni.$u.props.swiperIndicator.current },
-
-    // 指示器非激活颜色
-    indicatorActiveColor: {
-      type: String,
-      default: uni.$u.props.swiperIndicator.indicatorActiveColor },
-
-    // 指示器的激活颜色
-    indicatorInactiveColor: {
-      type: String,
-      default: uni.$u.props.swiperIndicator.indicatorInactiveColor },
-
-    // 指示器模式，line-线型，dot-点型
-    indicatorMode: {
-      type: String,
-      default: uni.$u.props.swiperIndicator.indicatorMode } } };exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-/* 685 */,
-/* 686 */,
-/* 687 */,
-/* 688 */,
-/* 689 */,
-/* 690 */,
-/* 691 */,
-/* 692 */
+/* 793 */,
+/* 794 */,
+/* 795 */,
+/* 796 */,
+/* 797 */,
+/* 798 */,
+/* 799 */,
+/* 800 */
 /*!*******************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uni-icons/components/uni-icons/icons.js ***!
   \*******************************************************************************************/
@@ -39326,14 +39669,14 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     "unicode_decimal": 58929 }] };exports.default = _default;
 
 /***/ }),
-/* 693 */,
-/* 694 */,
-/* 695 */,
-/* 696 */,
-/* 697 */,
-/* 698 */,
-/* 699 */,
-/* 700 */
+/* 801 */,
+/* 802 */,
+/* 803 */,
+/* 804 */,
+/* 805 */,
+/* 806 */,
+/* 807 */,
+/* 808 */
 /*!**************************************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uni-datetime-picker/components/uni-datetime-picker/util.js ***!
   \**************************************************************************************************************/
@@ -39753,21 +40096,21 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 Calendar;exports.default = _default;
 
 /***/ }),
-/* 701 */,
-/* 702 */,
-/* 703 */,
-/* 704 */,
-/* 705 */,
-/* 706 */,
-/* 707 */,
-/* 708 */,
-/* 709 */,
-/* 710 */,
-/* 711 */,
-/* 712 */,
-/* 713 */,
-/* 714 */,
-/* 715 */
+/* 809 */,
+/* 810 */,
+/* 811 */,
+/* 812 */,
+/* 813 */,
+/* 814 */,
+/* 815 */,
+/* 816 */,
+/* 817 */,
+/* 818 */,
+/* 819 */,
+/* 820 */,
+/* 821 */,
+/* 822 */,
+/* 823 */
 /*!***************************************************************************************************************!*\
   !*** F:/uniapp/cultural-heritage-vue/uni_modules/uni-transition/components/uni-transition/createAnimation.js ***!
   \***************************************************************************************************************/
@@ -39903,58 +40246,6 @@ function createAnimation(option, _this) {
   clearTimeout(_this.timer);
   return new MPAnimation(option, _this);
 }
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-/* 716 */,
-/* 717 */,
-/* 718 */,
-/* 719 */,
-/* 720 */,
-/* 721 */
-/*!***************************************************************************************!*\
-  !*** F:/uniapp/cultural-heritage-vue/uni_modules/uview-ui/components/u-link/props.js ***!
-  \***************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
-  props: {
-    // 文字颜色
-    color: {
-      type: String,
-      default: uni.$u.props.link.color },
-
-    // 字体大小，单位px
-    fontSize: {
-      type: [String, Number],
-      default: uni.$u.props.link.fontSize },
-
-    // 是否显示下划线
-    underLine: {
-      type: Boolean,
-      default: uni.$u.props.link.underLine },
-
-    // 要跳转的链接
-    href: {
-      type: String,
-      default: uni.$u.props.link.href },
-
-    // 小程序中复制到粘贴板的提示语
-    mpTips: {
-      type: String,
-      default: uni.$u.props.link.mpTips },
-
-    // 下划线颜色
-    lineColor: {
-      type: String,
-      default: uni.$u.props.link.lineColor },
-
-    // 超链接的问题，不使用slot形式传入，是因为nvue下无法修改颜色
-    text: {
-      type: String,
-      default: uni.$u.props.link.text } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ })

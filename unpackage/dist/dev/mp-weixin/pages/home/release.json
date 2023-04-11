@@ -2,10 +2,11 @@
   "navigationStyle": "custom",
   "usingComponents": {
     "u-navbar": "/uni_modules/uview-ui/components/u-navbar/u-navbar",
-    "u-textarea": "/uni_modules/uview-ui/components/u-textarea/u-textarea",
-    "u-upload": "/uni_modules/uview-ui/components/u-upload/u-upload",
     "u-button": "/uni_modules/uview-ui/components/u-button/u-button",
+    "u-upload": "/uni_modules/uview-ui/components/u-upload/u-upload",
+    "u-picker": "/uni_modules/uview-ui/components/u-picker/u-picker",
     "u-popup": "/uni_modules/uview-ui/components/u-popup/u-popup",
-    "u-action-sheet": "/uni_modules/uview-ui/components/u-action-sheet/u-action-sheet"
+    "u-action-sheet": "/uni_modules/uview-ui/components/u-action-sheet/u-action-sheet",
+    "zy-tag": "/uni_modules/zy-tag/components/zy-tag/zy-tag"
   }
 }

@@ -76,6 +76,11 @@
 		onLoad() {
 			this.getPaperList()
 		},
+		sockets: {
+			broadcast_msg(data) {
+				console.log(data)
+			}
+		},
 		methods: {
 			async getPaperList() {
 				const {
@@ -88,6 +93,7 @@
 			refresh() {
 				setTimeout(() => {
 					this.list = []
+					this.getPaperList()
 					// 停止下拉刷新
 					uni.stopPullDownRefresh()
 				}, 1000)

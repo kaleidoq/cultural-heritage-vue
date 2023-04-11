@@ -1,0 +1,11 @@
+.content.data-v-2a9a2571 {
+  width: 220rpx !important;
+  height: 220rpx;
+  border-radius: 20rpx;
+}
+.title.data-v-2a9a2571 {
+  width: 220rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+

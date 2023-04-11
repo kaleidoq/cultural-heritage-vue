@@ -3363,4 +3363,10 @@ scroll-view.cu-steps .cu-item.data-v-62b3f318 {
 .detail .bottom-input.data-v-62b3f318 {
   height: 100rpx;
 }
+.goods .pic.data-v-62b3f318 {
+  width: 200rpx;
+  height: 150rpx;
+  border-radius: 20rpx;
+  margin-right: 20rpx;
+}
 

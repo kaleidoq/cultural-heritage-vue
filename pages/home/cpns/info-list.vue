@@ -1,6 +1,6 @@
 <template>
 	<!-- 资讯列表 -->
-	<view class="info-list wrap-card border-b animate__animated animate__fadeInLeft animate__fast">
+	<view class="info-list wrap-card border-b animate__animated animate__fadeInDown  animate__fast">
 		<!-- 头像栏 -->
 		<view v-if="isUSer" class="flex flex-row justify-between items-center mr-15 mb-20">
 			<!-- 头像 -->

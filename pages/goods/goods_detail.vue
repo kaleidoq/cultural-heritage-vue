@@ -21,15 +21,15 @@
 		<!-- 头像栏 -->
 		<view class="flex flex-row justify-between items-center mr-15 mb-20 px-20">
 			<!-- 头像 -->
-			<view class="flex flex-row justify-center items-center">
-				<image class=" head-image mr-20" :src="user.head" mode="aspectFill" lazy-load
-					@click.stop="$u.route('/pages/mine/user-space',{user_id:user.user_id})"></image>
+			<navigator :url="'/pages/mine/user-space?user_id='+goods.user_id"
+				class="flex flex-row justify-center items-center">
+				<image class=" head-image mr-20" :src="user.head" mode="aspectFill" lazy-load></image>
 				<view class="flex flex-col justify-center items-start">
 					<view class=" text-gray-700 text-30">
 						{{user.nickname}}
 					</view>
 				</view>
-			</view>
+			</navigator>
 			<!-- 关注 -->
 			<view class="flex flex-row justify-center items-center bg-gray-100 rounded-10 px-10 py-5 text-28">
 				<template v-if="user.is_follow">
@@ -58,9 +58,9 @@
 				{{goods.title}}
 			</view>
 			<view class='bg-white top-20 font-size'>
-				<text>
-					{{goods.desc}}
-				</text>
+
+				{{goods.content}}
+
 			</view>
 
 			<!-- 交易方式 -->
@@ -124,33 +124,28 @@
 					</view>
 				</view>
 			</navigator>
-
+			<!-- 
 			<view class='bg-gray top-30 information '>
-
 				<view class='Business_information'>
 					<view>5</view>
 					<view>
 						<text>在售宝贝</text>
 					</view>
 				</view>
-
 				<view class='Business_information'>
 					<view>5</view>
 					<view>
 						<text>累计交易</text>
 					</view>
 				</view>
-
-
 				<view class='Business_information'>
 					<view>5</view>
 					<view>
 						<text>在线宝贝</text>
 					</view>
 				</view>
-
 			</view>
-
+ -->
 			<!-- 
 
 			<scroll-view scroll-x="true" style=" white-space: nowrap; display: flex" class='top-20'>
@@ -246,14 +241,14 @@
 		<!-- 操作选项卡 -->
 		<view class="cu-bar bg-white tabbar border shop fixation flex justify-between">
 			<view class="flex flex-row">
-				<button class="action" bindtap='toChat'>
+				<button class="action" @tap='toChat'>
 					<view class="cuIcon-service text-green">
 						<view class="cu-tag badge"></view>
 					</view>
 					聊一聊
 				</button>
-				<view class="action">
-					<view class="cuIcon-favor">
+				<view class="action" @tap="collect">
+					<view :class="is_collect?'cuIcon-favorfill text-red':'cuIcon-favor'">
 						<view class="cu-tag badge">{{favorNum}}</view>
 					</view>
 					收藏
@@ -277,10 +272,13 @@
 <script>
 	import {
 		getGoods,
-		putGoodLook
+		putGoodLook,
+		getGoodCollectCount,
+		putCollect
 	} from '@/utils/api/goods.js'
 	import {
-		getUserIntro
+		getUserIntro,
+		setFollow
 	} from '@/utils/api/user.js'
 	export default {
 		data() {
@@ -288,6 +286,7 @@
 				goods: {},
 				user: {},
 				images: [],
+				is_collect: Boolean,
 				favorNum: 0,
 			}
 		},
@@ -300,19 +299,34 @@
 			// 初始化
 			async init(id) {
 				await putGoodLook(id)
+				this.getList(id)
+			},
+			async getList(id) {
 				const {
 					data: goods
 				} = await getGoods(id)
+				this.goods = goods
+				const image = goods.images
+				console.log(goods)
+				this.images = image.split(",")
+				this.getUser(goods.user_id)
+				this.getCount(goods.goods_id)
+			},
+			async getUser(id) {
 				let {
 					data: user
-				} = await getUserIntro(goods.user_id)
+				} = await getUserIntro(id)
 				this.user = user
-				this.goods = goods
 				console.log(user)
-				const image = goods.images
-				console.log(image)
-				this.images = image.split(",")
-				// console.log(this.images)
+			},
+			async getCount(good) {
+				console.log(good)
+				const {
+					data: count
+				} = await getGoodCollectCount(good)
+				console.log(count)
+				this.favorNum = count.collect_count
+				this.is_collect = count.is_collect
 			},
 			// 点击跳转订单详细页面
 			buy(e) {
@@ -320,6 +334,37 @@
 				uni.navigateTo({
 					url: '/pages/goods/goods_order?goods_id=' + this.goods.goods_id
 				});
+			},
+			toChat() {
+				uni.navigateTo({
+					url: "/pages/paper/chat?user_id=" + this.goods.user_id
+				})
+			},
+			// 关注
+			async follow(value) {
+				const data = await setFollow({
+					flag: value,
+					follower_id: this.goods.user_id
+				})
+				// this.info.is_follow = !this.info.is_follow
+				console.log(data)
+				this.user.is_follow = value
+				// console.log(this.is_follow)
+				const title = value ? '关注成功' : '取消成功'
+				uni.showToast({
+					title,
+					icon: 'none',
+				})
+			},
+			async collect() {
+				const {
+					data: res
+				} = await putCollect(this.goods.goods_id, this.is_collect)
+				if (res.affectedRows == 1) {
+					this.is_collect = !this.is_collect
+					this.favorNum = this.is_collect ? this.favorNum + 1 : this.favorNum - 1
+				}
+				// console.log(res)
 			}
 		}
 	}

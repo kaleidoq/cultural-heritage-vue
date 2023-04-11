@@ -1,5 +1,6 @@
 const url_all = {
 	'DEV': 'http://127.0.0.1/api', // 开发
+
 }
 let BASEURL = url_all['DEV']
 
@@ -36,7 +37,7 @@ export const request = (options = {}) => {
 // 发起请求
 function handleRequest(options, resolve, reject) {
 	let token = getToken()
-	console.log('option', options)
+	// console.log('option', options)
 	uni.request({
 		url: BASEURL + options.url,
 		method: options.method,

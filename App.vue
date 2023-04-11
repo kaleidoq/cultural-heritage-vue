@@ -47,6 +47,26 @@
 		onShow: function() {
 			console.log('App Show')
 		},
+		created() {
+			// uni.request({
+			// 	url: '/',
+			// 	method: 'GET',
+			// 	// data: options.data,
+			// 	header: {
+			// 		// "Authorization": token, //自定义请求头信息
+			// 		// 'Content-type': options.headers['Content-Type'] || 'application/x-www-form-urlencoded;charset=UTF-8'
+			// 	},
+			// 	success: (res) => {
+			// 		// const data = res.data
+			// 		console.log('response', res)
+			// 		return resolve(res.data)
+			// 	},
+			// 	fail: (fail) => {
+			// 		console.log('fail', fail)
+			// 		return reject(fail);
+			// 	}
+			// })
+		},
 		onHide: function() {
 			console.log('App Hide')
 		}

@@ -538,9 +538,9 @@ $color:(
 .text-right { text-align: right!important;}
 .text-justify { text-align: justify!important;}
 // 文本溢出
-.line-1 {
+.line-1 { 
+	white-space: nowrap;
     overflow: hidden;
-    white-space: nowrap;
     text-overflow: ellipsis;
 }
 .line-2 {
@@ -602,6 +602,7 @@ $color:(
 		border-#{$var}-width: 0;
 	}
 }
+
 .border{  border-width: 1rpx; border-style: solid; border-color: $border-color;}
 .border-0{ border-width: 0 !important; }
 

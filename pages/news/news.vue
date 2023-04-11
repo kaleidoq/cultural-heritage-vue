@@ -75,10 +75,10 @@
 						name: "关注",
 						id: 'follow'
 					},
-					{
-						name: "话题",
-						id: 'topic'
-					}
+					// {
+					// 	name: "话题",
+					// 	id: 'topic'
+					// }
 				],
 				swiperHeight: 0,
 				// 关注列表
@@ -137,6 +137,7 @@
 					list: [],
 					// topicList[1].list
 				}
+
 			}
 		},
 		onLoad() {

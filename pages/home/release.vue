@@ -57,15 +57,16 @@
 			<!-- end -->
 
 			<!-- 选择分类  -->
-			<view class="cu-form-group" @click="showPicker=true">
+			<view class="cu-form-group" @click="showClassify">
 				<view class="title">分类:</view>
-				<u-picker :show="showPicker" ref="uPicker" :columns="columns" keyName="class_name"
+				<!-- <u-picker :show="showPicker" ref="uPicker" :columns="columns" keyName="class_name"
 					@confirm="confirmPicker" @change="changePicker">
 				</u-picker>
 				<view class="title">
 					{{classify}}
 				</view>
-				<text class="title cuIcon-right"></text>
+				<text class="title cuIcon-right"></text> -->
+				<class-picker ref="classPicker" @onConfirm="confirmClassify"></class-picker>
 			</view>
 			<!-- end -->
 
@@ -151,7 +152,7 @@
 				actionShow: false,
 				tagList: [],
 				focus: false,
-				addValue: '',
+				addValue: '', //tag添加
 				// 图片列表
 				imgList: [],
 				images: [],
@@ -170,7 +171,7 @@
 				form: {
 					title: 'Ceshi ',
 					content: 'scascascasc',
-					images: '',
+					images: null,
 					cover_pic: null,
 					class_id: -1,
 					tags: null
@@ -232,42 +233,43 @@
 				// this.$refs.cityPicker
 				// this.form.address = e.label
 			},
-			onBackPress() {
-				if (this.$refs.cityPicker.showPicker) {
-					this.$refs.cityPicker.pickerCancel();
-					return true;
-				}
+			// onBackPress() {
+			// 	if (this.$refs.cityPicker.showPicker) {
+			// 		this.$refs.cityPicker.pickerCancel();
+			// 		return true;
+			// 	}
+			// },
+			// // 选择器改变时
+			// changePicker(e) {
+			// 	console.log(e)
+			// 	const {
+			// 		columnIndex,
+			// 		// value,
+			// 		// values, // values为当前变化列的数组内容
+			// 		index,
+			// 		// 微信小程序无法将picker实例传出来，只能通过ref操作
+			// 		picker = this.$refs.uPicker
+			// 	} = e
+			// 	// 当第一列值发生变化时，变化第二列(后一列)对应的选项
+			// 	if (columnIndex === 0) {
+			// 		// picker为选择器this实例，变化第二列对应的选项
+			// 		console.log(e)
+			// 		console.log(this.columns)
+			// 		picker.setColumnValues(1, this.columns[0][index].children)
+			// 	}
+			// },
+			// // 回调参数为包含columnIndex、value、values
+			// confirmPicker(e) {
+			// 	console.log('confirm', e)
+			// 	this.form.class_id = e.value[1].class_id
+			// 	this.classify = e.value[0].class_name + '   ' + e.value[1].class_name
+			// 	this.showPicker = false
+			// },
+			confirmClassify(e) {
+				this.form.class_id = e
 			},
-			onUnload() {
-				if (this.$refs.cityPicker.showPicker) {
-					this.$refs.cityPicker.pickerCancel()
-				}
-			},
-			// 选择器改变时
-			changePicker(e) {
-				console.log(e)
-				const {
-					columnIndex,
-					value,
-					values, // values为当前变化列的数组内容
-					index,
-					// 微信小程序无法将picker实例传出来，只能通过ref操作
-					picker = this.$refs.uPicker
-				} = e
-				// 当第一列值发生变化时，变化第二列(后一列)对应的选项
-				if (columnIndex === 0) {
-					// picker为选择器this实例，变化第二列对应的选项
-					console.log(e)
-					console.log(this.columns)
-					picker.setColumnValues(1, this.columns[0][index].children)
-				}
-			},
-			// 回调参数为包含columnIndex、value、values
-			confirmPicker(e) {
-				console.log('confirm', e)
-				this.form.class_id = e.value[1].class_id
-				this.classify = e.value[0].class_name + '   ' + e.value[1].class_name
-				this.showPicker = false
+			showClassify() {
+				this.$refs.classPicker.show(true)
 			},
 			//删除标签
 			deleteTag(item) {
@@ -277,7 +279,6 @@
 				// 	return o !== item
 				// })
 			},
-
 			// 提示保存为草稿
 			tipDraft() {
 				uni.showModal({
@@ -312,7 +313,9 @@
 					this.form.images = this.images.join(',')
 					this.form.cover_pic = this.images[0]
 				}
-				this.form.tags = this.tagList.join('|')
+				if (this.tagList != null) {
+					this.form.tags = this.tagList.join('|')
+				}
 				if (this.form.title == '') {
 					// this.
 					uni.showToast({
@@ -336,18 +339,25 @@
 				this.draftShow = false
 				console.log(this.form)
 				// 提交到后台
-				this.addArticle()
-				uni.showToast({
-					title: '发布成功！',
-					icon: 'none'
-				})
-				setTimeout(() => {
-					uni.navigateBack({
-						delta: 1,
-						animationType: 'pop-out',
-						animationDuration: 200
-					});
-				}, 1000)
+				if (this.addArticle()) {
+					uni.showToast({
+						title: '发布成功！',
+						icon: 'none'
+					})
+					setTimeout(() => {
+						uni.navigateBack({
+							delta: 1,
+							// animationType: 'pop-out',
+							animationDuration: 200
+						});
+					}, 1000)
+				} else {
+					uni.showToast({
+						title: '发布失败！',
+						icon: 'none'
+					})
+				}
+
 
 			},
 			// 上传文章信息
@@ -356,6 +366,9 @@
 					data: res
 				} = await addArticle(this.form)
 				console.log(res)
+				if (res.affectedRows == 1)
+					return true
+				else return false
 			},
 			// 选择访问
 			changeAction() {

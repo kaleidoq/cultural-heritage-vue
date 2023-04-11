@@ -66,6 +66,23 @@ export const getUserIntro = (id) => {
 
 
 /**
+ *  获得个人界面的信息
+ *  包括头像昵称 关注人数 粉丝人数 帖子人数
+ *  @param(user_id)
+ *  @returns(nickname,head,introduce,followNum,fanNum,articleNum,collectNum)
+ */
+export const getUserCount = (id) => {
+	return request({
+		url: baseAPI + '/getUserCount',
+		method: 'GET',
+		data: {
+			user_id: id
+		}
+	})
+}
+
+
+/**
  *  获得用户数据
  * @param (user_id)
  * @returns (全部用户信息邮箱电话等)
@@ -142,17 +159,5 @@ export const getCollection = () => {
 	return request({
 		url: baseAPI + '/getCollection',
 		method: 'GET'
-	})
-}
-
-
-// 删除帖子（实际不删除，设置idDel=1
-export const delectArticle = (id) => {
-	return request({
-		url: baseAPI + '/delectArticle',
-		method: 'DELETE',
-		data: {
-			article_id: id
-		}
 	})
 }

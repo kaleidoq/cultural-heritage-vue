@@ -87,7 +87,7 @@
 					<view v-else class="cuIcon-favor mr-10 text-36" @click="handleCollect(true)"></view>
 					{{info.collect_count|fileThousand}}
 				</view>
-				<view class="flex flex-row justify-center items-center mr-20" @click="goDetail()">
+				<view class="flex flex-row justify-center items-center mr-20">
 					<view class="cuIcon-comment mr-10 text-36"></view>
 					{{info.comment_count|fileThousand}}
 				</view>

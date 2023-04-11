@@ -147,20 +147,58 @@ export const addArticle = (form) => {
 }
 
 
+// /**
+//  *  修改文章的喜欢
+//  * @param(class_id,length)
+//  * @method(get)
+//  */
+// export const getClassifyArticleCover = (class_id, length) => {
+// 	return request({
+// 		url: baseAPI + '/getClassifyArticleCover',
+// 		method: 'GET',
+// 		data: {
+// 			// class_id: class_id,
+// 			// length: length
+// 			class_id,
+// 			length
+// 		}
+// 	})
+// }
+
+
 /**
- *  修改文章的喜欢
- * @param(class_id,length)
- * @method(get)
+ * 获得文章列表数据
+ * @param{
+ * length:当前已经得到的列表长度
+ * class_id:获得的分类id
+ * state:按什么顺序排序列表（0:最新评论；1:最新发布：2:最多收藏；3:最多喜欢)
+ * }
+ * @returns{list}
  */
-export const getClassifyArticleCover = (class_id, length) => {
+export const getArticleList = (length, class_id, state) => {
 	return request({
-		url: baseAPI + '/getClassifyArticleCover',
+		url: baseAPI + '/getArticleList',
 		method: 'GET',
 		data: {
-			// class_id: class_id,
-			// length: length
-			class_id,
-			length
+			class_id: class_id,
+			length: length,
+			state: state
+		}
+	})
+}
+
+
+
+/**
+ * 删除帖子（实际不删除，设置idDel=1
+ * @param(article_id)
+ */
+export const delectArticle = (id) => {
+	return request({
+		url: baseAPI + '/delectArticle',
+		method: 'DELETE',
+		data: {
+			article_id: id
 		}
 	})
 }

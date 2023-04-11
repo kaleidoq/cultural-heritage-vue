@@ -14,15 +14,15 @@
 			</view>
 			<view class="flex flex-row w-50 justify-around my-20">
 				<view class="flex-1 flex flex-col items-center justify-center">
-					<text class="font-bold text-32">12</text>
+					<text class="font-bold text-32">{{info.fanNum}}</text>
 					<text class="text-26">粉丝</text>
 				</view>
 				<view class="flex-1 flex flex-col items-center justify-center">
-					<text class="font-bold text-32">12</text>
+					<text class="font-bold text-32">{{info.followNum}}</text>
 					<text class="text-26">关注</text>
 				</view>
 				<view class="flex-1 flex flex-col items-center justify-center">
-					<text class="font-bold text-32">12</text>
+					<text class="font-bold text-32">{{info.articleNum}}</text>
 					<text class="text-26">发帖</text>
 				</view>
 
@@ -121,7 +121,8 @@
 		getUserInfo,
 		getUserArticle,
 		getFollow,
-		setFollow
+		setFollow,
+		getUserCount
 	} from "@/utils/api/user.js"
 	import InfoList from "@/pages/home/cpns/info-list.vue"
 	export default {
@@ -183,13 +184,25 @@
 			},
 			// 获得某位用户的具体信息
 			async getUserInfo() {
-				const {
-					data: res
-				} = await getUserInfo({
-					user_id: this.info.user_id
+				// const {
+				// 	data: res
+				// } = await getUserInfo({
+				// 	user_id: this.info.user_id
+				// })
+				// console.log(res)
+				// this.info = res
+				let {
+					data: count
+				} = await getUserCount(this.info.user_id)
+				// let _count = {}
+				count.map(item => {
+					this.info = {
+						...this.info,
+						...item
+					}
 				})
-				console.log(res)
-				this.info = res
+				// this.info = _count
+				console.log(this.info)
 			},
 			// 获得某位用户的全部文章信息
 			async getUserArticle() {
@@ -225,7 +238,9 @@
 				// this.info.is_follow = !this.info.is_follow
 				console.log(data)
 				this.is_follow = value
-				console.log(this.is_follow)
+				this.info.fanNum = value ? this.info.fanNum + 1 : this.info.fanNum - 1
+				console.log(this.info.fanNum)
+				// console.log(this.is_follow)
 				const title = value ? '关注成功' : '取消成功'
 				uni.showToast({
 					title,

@@ -19,7 +19,20 @@
     "pages/mine/feedback",
     "pages/mine/about",
     "pages/mine/login",
-    "pages/mine/user-space"
+    "pages/mine/user-space",
+    "pages/mine/collection",
+    "pages/news/goods",
+    "pages/goods/goods_detail",
+    "pages/mine/my-space",
+    "pages/mine/my",
+    "pages/goods/goods_order",
+    "pages/order/consignee",
+    "pages/order/edit-cgn",
+    "pages/goods/finish_buy",
+    "pages/order/order_detail",
+    "pages/order/order_buy_list",
+    "pages/home/switch_release",
+    "pages/home/release_good"
   ],
   "subPackages": [],
   "window": {
@@ -42,9 +55,15 @@
       },
       {
         "pagePath": "pages/news/news",
-        "text": "新鲜事",
+        "text": "关注动态",
         "iconPath": "/static/img/tabbar/news.png",
         "selectedIconPath": "/static/img/tabbar/news-ed.png"
+      },
+      {
+        "pagePath": "pages/home/switch_release",
+        "text": "发布",
+        "iconPath": "/static/img/tabbar/release.png",
+        "selectedIconPath": "/static/img/tabbar/release-ed.png"
       },
       {
         "pagePath": "pages/paper/paper",
@@ -60,5 +79,6 @@
       }
     ]
   },
+  "permission": {},
   "usingComponents": {}
 }

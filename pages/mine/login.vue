@@ -115,7 +115,7 @@
 				const {
 					data: data
 				} = await userLogin(this.form)
-				console.log("dataaa", data)
+				// console.log("dataaa", data)
 				uni.setStorageSync("token", data.token)
 				uni.setStorageSync("head", data.head)
 				uni.switchTab({

@@ -60,3 +60,18 @@ export const searchTags = (length, info) => {
 		}
 	})
 }
+
+/**
+ * 搜索商品内容
+ * @param {info,length}
+ */
+export const searchGoods = (length, info) => {
+	return request({
+		url: baseAPI + '/searchGoods',
+		method: 'POST',
+		data: {
+			length: length,
+			info: info
+		}
+	})
+}

@@ -1,6 +1,8 @@
 <template>
 	<!-- 小纸条列表 -->
-	<view class="paper-item flex items-center p-20 border-b border-gray-100" hover-class="bg-gray" @click="goChat">
+	<view
+		class="paper-item flex items-center p-20 border-b border-gray-100  animate__animated animate__fadeInLeft animate__fast"
+		hover-class="bg-gray" @click="goChat">
 		<image class="item-img mr-20 rounded-full" :src="item.head" mode=""></image>
 		<view class="flex-1 flex flex-col">
 			<view class="flex justify-between items-center">

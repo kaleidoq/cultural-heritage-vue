@@ -1,0 +1,9 @@
+
+.rule {
+	display: flex;
+	justify-content: space-between;
+}
+.margin-top-xl-170 {
+	margin-top: 170rpx;
+}
+

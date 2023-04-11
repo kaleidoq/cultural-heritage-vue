@@ -3,8 +3,9 @@
   "usingComponents": {
     "u-navbar": "/uni_modules/uview-ui/components/u-navbar/u-navbar",
     "u-search": "/uni_modules/uview-ui/components/u-search/u-search",
-    "u--text": "/uni_modules/uview-ui/components/u--text/u--text",
     "u-icon": "/uni_modules/uview-ui/components/u-icon/u-icon",
+    "u-tabs": "/uni_modules/uview-ui/components/u-tabs/u-tabs",
+    "u-empty": "/uni_modules/uview-ui/components/u-empty/u-empty",
     "u-toast": "/uni_modules/uview-ui/components/u-toast/u-toast",
     "info-list": "/pages/home/cpns/info-list",
     "topic-list": "/pages/news/cpns/topic-list",

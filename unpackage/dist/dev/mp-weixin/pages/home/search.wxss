@@ -3359,6 +3359,7 @@ page.data-v-761fbcef {
 .search.data-v-761fbcef .u-navbar .nav-center {
   width: 100%;
   margin-left: 80rpx;
+  margin-top: 2000rpx;
 }
 .search .close-tag.data-v-761fbcef {
   position: absolute;

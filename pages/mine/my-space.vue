@@ -81,9 +81,11 @@
 <script>
 	import {
 		getUserInfo,
-		getUserArticle,
-		delectArticle
+		getUserArticle
 	} from "@/utils/api/user.js"
+	import {
+		delectArticle
+	} from "@/utils/api/article.js"
 	import InfoList from "@/pages/home/cpns/info-list.vue"
 	export default {
 		components: {

@@ -65,6 +65,17 @@
 			<info-list :item="item" v-for="(item,index) in list.tags" :key="index">
 			</info-list>
 		</template>
+		<!-- 商品列表 -->
+		<template v-else-if="tabIndex === 3">
+			<u-waterfall class="flex fall-content" v-model="list.goods" ref="uWaterfall">
+				<template v-slot:left="{leftList}">
+					<water-list :list="leftList"></water-list>
+				</template>
+				<template v-slot:right="{rightList}">
+					<water-list :list="rightList"></water-list>
+				</template>
+			</u-waterfall>
+		</template>
 		<u-toast ref="uToast"></u-toast>
 	</view>
 </template>
@@ -75,17 +86,20 @@
 		searchUser,
 		getHotSearch,
 		getSearchHistory,
-		searchTags
+		searchTags,
+		searchGoods
 	} from "@/utils/api/search.js"
 	import InfoList from "@/pages/home/cpns/info-list.vue"
-	import TopicList from "@/pages/news/cpns/topic-list.vue"
+	// import TopicList from "@/pages/news/cpns/topic-list.vue"
 	import FriendList from "@/pages/paper/cpns/friend-list.vue"
+	import WaterList from '@/pages/news/cpns/water-list.vue'
 
 	export default {
 		components: {
 			InfoList,
-			TopicList,
-			FriendList
+			// TopicList,
+			FriendList,
+			WaterList
 		},
 		data() {
 			return {
@@ -97,7 +111,8 @@
 				list: {
 					info: [],
 					user: [],
-					tags: []
+					tags: [],
+					goods: []
 				},
 				indexList: [{
 					name: "文章"
@@ -105,9 +120,10 @@
 					name: "用户"
 				}, {
 					name: "标签"
+				}, {
+					name: "商品"
 				}],
 				tabIndex: 0,
-
 			}
 		},
 		// 监听原生标题栏按钮点击事件
@@ -167,7 +183,6 @@
 					title: '加载中',
 				})
 				// 清空列表中的数据
-				// this.list =
 				setTimeout(() => {
 					uni.hideLoading()
 					// switch (this.tabIndex) {
@@ -211,6 +226,16 @@
 				console.log(tags)
 				tags.map(item => {
 					this.list.tags.push(item)
+				})
+			},
+			// 搜索标签信息
+			async getGoods() {
+				const {
+					data: good
+				} = await searchGoods(this.list.tags.length, this.keyword)
+				console.log(good)
+				good.map(item => {
+					this.list.good.push(item)
 				})
 			},
 			// 删除记录
@@ -264,10 +289,30 @@
 					console.log(this.list)
 				}, 1000)
 			},
-
 			handleSearch(key) {
 				this.keyword = key
+				this.setNavSearchInput(key)
 				this.search()
+			},
+			// 动态设置导航栏搜索框内容
+			setNavSearchInput(keyword) {
+				// #ifdef APP-PLUS
+				let webView = this.$mp.page.$getAppWebview();
+				webView.setTitleNViewSearchInputText(keyword);
+				// #endif
+				// #ifdef H5
+				let inputSearch = document.querySelector('.uni-input-input[type=search]');
+				var evt = new InputEvent('input', {
+					inputType: 'insertText',
+					data: keyword,
+					dataTransfer: null,
+					isComposing: false
+				});
+				if (inputSearch) {
+					inputSearch.value = keyword;
+					inputSearch.dispatchEvent(evt);
+				}
+				// #endif
 			}
 		}
 	}

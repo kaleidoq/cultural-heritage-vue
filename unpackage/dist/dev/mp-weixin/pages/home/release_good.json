@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-upload": "/uni_modules/uview-ui/components/u-upload/u-upload",
+    "city-picker": "/components/city-picker/city-picker",
+    "u-picker": "/uni_modules/uview-ui/components/u-picker/u-picker",
+    "zy-tag": "/uni_modules/zy-tag/components/zy-tag/zy-tag"
+  }
+}

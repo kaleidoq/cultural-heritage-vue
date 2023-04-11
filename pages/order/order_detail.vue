@@ -33,9 +33,9 @@
 						<text class='text-black'>分后</text>
 					</text> -->
 				</view>
-				<view class='price-explain-1s text-center'>
+				<!-- <view class='price-explain-1s text-center'>
 					<text>买家仍未确定收货,系统会自动确认,<br />欠款会打到您的微信账户中</text>
-				</view>
+				</view> -->
 			</view>
 		</view>
 		<!-- end -->
@@ -44,8 +44,25 @@
 		<!-- end -->
 		<!-- 物流描述 -->
 		<view class='logistics padding bg-white'>
-			<view><text class='text-black ml-20'>见面交易，无需物流</text></view>
+			<!-- <view><text class='text-black ml-20'>见面交易，无需物流</text></view> -->
 			<!-- <view><text class='text-blue text-weight' bindtap='toLogisticsDetails'>物流详情</text></view> -->
+			<!-- 地址 -->
+			<!-- <view class="flex justify-between text-26 mt-30"> -->
+			<view class="flex justify-center align-center ml-20"><text>收货地址</text></view>
+			<view class="flex">
+				<view class="flex flex-col">
+					<view class="text-right mb-10">
+						<text>{{order.name}}</text><text class="ml-20">{{order.tel}}</text>
+					</view>
+					<view class="text-right"><text>{{order.region}}
+							{{order.address}}
+						</text>
+					</view>
+				</view>
+				<view style="margin: auto 20rpx;"><text class='cuIcon-right lg text-gray'></text></view>
+			</view>
+			<!-- </view> -->
+
 		</view>
 		<!-- end -->
 		<!-- 分离线 -->
@@ -94,7 +111,7 @@
 			<view class='shopping_desc '>
 				<text>交易时间</text>
 				<!-- <text>{{order.creat_time|gettime}}</text> -->
-				<text>{{order.creat_time|formatTime}}</text>
+				<text>{{order.create_time|formatTime}}</text>
 			</view>
 
 		</view>
@@ -106,11 +123,11 @@
 
 
 		<!-- 确定按钮 -->
-		<view class='comfirm bg-white'>
+		<!-- <view class='comfirm bg-white'>
 
 			<button class='bg-green cu-btn margin-tb-sm comfirm_button lg'>提醒买家收货</button>
 
-		</view>
+		</view> -->
 		<!-- end -->
 
 	</view>
@@ -159,6 +176,7 @@
 				console.log(item)
 				let imgs = item.goods_images.split(',')
 				item.cover = imgs[0]
+				item.region = (item.region.split(','))[0]
 				this.basics = item.status
 				this.order = item
 				console.log(this.order)

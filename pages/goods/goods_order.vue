@@ -52,8 +52,8 @@
 		<!-- 底部操作栏 -->
 		<view class='foot bg-white'>
 			<view class='foot-1'><text class='foot-1_1'>实付款:</text><text
-					class='text-price text-red foot-1_2'>{{actual_price=goods.price}}</text></view>
-			<view class='foot-2' @tap="confim"><text>确定</text></view>
+					class='text-price text-red foot-1_2'>{{goods.price}}</text></view>
+			<view class='foot-2' @click="confim"><text>确定</text></view>
 		</view>
 
 		<!-- end -->
@@ -102,7 +102,6 @@
 					cgn.region = _region[0]
 					this.consignee = cgn
 				} else this.getStore()
-
 			},
 			getStore() {
 				uni.getStorage({
@@ -133,7 +132,7 @@
 				console.log(this.goods)
 				const {
 					data: mes
-				} = await initOrder(this.goods.goods_id, this.consignee.cgn_id, this.goods.user_id, this.actual_price)
+				} = await initOrder(this.goods.goods_id, this.consignee.cgn_id, this.goods.user_id, this.goods.price)
 				console.log(mes)
 				//跳转订单页面
 				uni.navigateTo({

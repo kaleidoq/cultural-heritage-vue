@@ -61,9 +61,9 @@
 			</view>
 
 			<view class="cu-item arrow">
-				<navigator class="content" hover-class="none" url='/pages/my/my_sale/my_sale'>
+				<navigator class="content" hover-class="none" url='/pages/goods/goods-list'>
 					<text class="cuIcon-titles text-green"></text>
-					<text class="text-grey">我的卖出</text>
+					<text class="text-grey">我的商品</text>
 					<!-- <text class='ml-10 num'>99</text> -->
 				</navigator>
 			</view>

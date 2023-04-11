@@ -53,8 +53,8 @@
 		},
 		onLoad(e) {
 			console.log(e)
-			this.anothUser.user_id = e.user_id
-			// this.mainUser.head = uni.getStorageSync("head")
+			this.anothUser.user_id = parseInt(e.user_id)
+			this.mainUser.head = uni.getStorageSync("head")
 			// 设置scrollHeight
 			uni.getSystemInfo({
 				success: (res) => {
@@ -65,16 +65,43 @@
 			})
 			this.init()
 		},
+		onShow() {
+			this.init()
+		},
 		// 页面加载完成
 		onReady() {
 			// 滚动到底部
 			this.scrollToBottom()
+		},
+		// watch() {
+		// 	this.sockets.subscribe('welcome', data => {
+		// 		console.log('welcome', data)
+		// 	})
+		// },
+		sockets: {
+			broadcast_msg(data) {
+				// this.chatHistory.push(data)
+				// console.log(this.chatHistory)
+				// localStorage.setItem('chatHistory', JSON.stringify(this.chatHistory))
+				console.log('broadcast data ', data)
+				console.log('another', this.anothUser.user_id)
+				if (data.another_id == this.mainUser.user_id) {
+					const obj = {
+						user_id: this.anothUser.user_id,
+						head: this.anothUser.head,
+						content: data.content,
+						send_time: this.$u.timeFormat(new Date(), 'yyyy-mm-dd hh:MM:ss')
+					}
+					this.list.push(obj)
+				}
+			}
 		},
 		methods: {
 			// 初始化
 			init() {
 				this.getUserChatInfo()
 				this.getChatList()
+				// this.connect()
 				// this.scrollToBottom()
 			},
 			// 获得用户昵称头像
@@ -84,6 +111,7 @@
 				} = await getUserChatInfo({
 					user_id: this.anothUser.user_id
 				})
+				// this.$socket.emit('hello', '这里是客户端')
 				console.log(res)
 				this.anothUser.head = res.head
 				this.anothUser.nickname = res.nickname
@@ -111,29 +139,27 @@
 			// 发送消息
 			async submit(content) {
 				const obj = {
-					user_id: 1,
 					head: this.mainUser.head,
-					// username: 'jay',
 					content: content,
-					// type: 'text',
 					send_time: this.$u.timeFormat(new Date(), 'yyyy-mm-dd hh:MM:ss')
 				}
-				const res = await submitChat({
+				let message = {
 					content: content,
 					list_id: this.list_id,
 					another_id: this.anothUser.user_id
-				})
+				}
+				this.$socket.emit('sendMessage', message)
+				const res = await submitChat(message)
 				console.log(res)
 				if (res.code == 0) {
 					this.list_id = res.data.list_id
 					this.list.push(obj)
-					console.log(this.list)
+					// console.log(this.list)
 					// 滚动到底部
 					setTimeout(() => {
 						this.scrollToBottom()
 					}, 500)
 				} else this.$u.toast("消息发送失败")
-
 			},
 			// 滚动到底部
 			scrollToBottom() {

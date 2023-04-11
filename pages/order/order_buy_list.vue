@@ -2,6 +2,11 @@
 	<view>
 		<!-- 内容 -->
 		<view class='pa'>
+			<view v-if="orderList.length==0">
+				<u-empty text="本来无一物,何处惹尘埃" icon="/static/img/demo/winter.svg" textSize="16" marginTop='25%'
+					mode="list">
+				</u-empty>
+			</view>
 			<view class='container bg-white shadow-warp' v-for="(item,index) in orderList" :key="index">
 				<navigator class='container-top' :url="'/pages/order/order_detail?order_id='+item.order_id">
 					<view class='container-top-1'>
@@ -22,21 +27,24 @@
 
 				<view class='container-line'></view>
 
-				<view class='container-under'>
+				<view class='container-under text-28'>
 					<view class='container-under-1 flex'>
 						<text class='cuIcon-message font-size-lg text-black'></text>
 						<navigator :url="'/pages/paper/chat?user_id='+item.seller_user_id"
 							class='text-sm text-black text-blue'>
-							联系买家</navigator>
+							联系卖家</navigator>
 					</view>
-					<view class='container-under-2'>
+					<view class="container-under-2">
 						<view v-if="item.status===0" class="cu-tag line-green padding">去付款</view>
-						<view v-if="item.status===1" class="cu-tag line-green padding">等待发货</view>
-						<view v-if="item.status===2" class="cu-tag line-green padding">确认收货</view>
+						<view v-if="item.status===1" class="line-green">等待发货</view>
+						<view v-if="item.status===2" class="cu-tag line-green" @tap="setReceive(item.order_id)">
+							确认收货</view>
+						<view v-if="item.status===3">
+							订单已完成</view>
 					</view>
 					<view>
 						<!-- <view class="cu-tag line-black padding">…</view> -->
-						<view class="cu-tag line-green padding">…</view>
+						<!-- <view class="cu-tag line-green padding">…</view> -->
 					</view>
 				</view>
 
@@ -51,7 +59,8 @@
 
 <script>
 	import {
-		queryOrder
+		queryOrder,
+		setReceive
 	} from '@/utils/api/order.js'
 	export default {
 		data() {
@@ -65,18 +74,33 @@
 		},
 		methods: {
 			async init() {
+				let list = []
 				const {
-					data: list
+					data: order
 				} = await queryOrder()
-				// console.log(list)
+				// console.log(order)
 				// this.orderList = list
-				list.map((item) => {
+				order.map((item) => {
 					let imgs = item.goods_images.split(',')
 					item.cover = imgs[0]
-					this.orderList.push(item)
+					list.push(item)
 				})
-				// console.log(list)
+				// console.log(order)
+				this.orderList = list
 				console.log(this.orderList)
+			},
+			async setReceive(order) {
+				const {
+					data: mes
+				} = await setReceive(order)
+				if (mes.affectedRows == 1) {
+					uni.showToast({
+						title: '状态修改成功！',
+						icon: 'none'
+					})
+				}
+				console.log(mes)
+				this.init()
 			}
 		}
 	}

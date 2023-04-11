@@ -27,17 +27,117 @@ var filters = _interopRequireWildcard(__webpack_require__(/*! @/utils/filters.js
 wx.__webpack_require_UNI_MP_PLUGIN__ = __webpack_require__;_vue.default.use(_uviewUi.default); // 引入配置文件
 _vue.default.prototype.$config = _config.default; // 引入助手函数
 _vue.default.prototype.$tool = _tool.default; //引用。相对路径根据你创建的位置与名称自行修改
-Object.keys(filters).forEach(function (key) {_vue.default.filter(key, filters[key]);});console.log('filters------', filters);
+Object.keys(filters).forEach(function (key) {_vue.default.filter(key, filters[key]);}); // console.log('filters------', filters)
 //在Vue实例创建之前注册全局过滤器
 Object.keys(filters).forEach(function (key) {
   _vue.default.filter(key, filters[key]);
 });
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// //socket 连接参数
+// const socketOptions = {
+// 	autoConnect: false, // 自动连接     这里为我项目需求  需要在指定情况下才连接socket
+// }
+
+// // 注册
+// Vue.use(
+// 	new VueSocketIO({
+// 		debug: true, // debug调试，生产建议关闭
+// 		connection: SocketIO("http://127.0.0.1:80", socketOptions),
+// 		store, // 如果没有使用到store可以不用写
+// 	})
+// )
+// import VueSocketIO from 'vue-socket.io'
+// // import SocketIO from "socket.io-client"
+// // 注册
+// Vue.use(
+// 	new VueSocketIO({
+// 		debug: true, // debug调试，生产建议关闭
+// 		connection: '127.0.0.1',
+// 		// store, // 如果没有使用到store可以不用写
+// 	})
+// )
+
+
+
+// Vue.config.productionTip = false
+
+// // socket 连接参数
+// const socketOptions = {
+// 	autoConnect: false, // 自动连接     这里为我项目需求  需要在指定情况下才连接socket
+// }
+
+// // 注册
+// Vue.use(
+// 	new VueSocketIO({
+// 		debug: true, // debug调试，生产建议关闭
+// 		connection: SocketIO("127.0.0.1:1024", socketOptions),
+// 		store, // 如果没有使用到store可以不用写
+// 	})
+// )
+
+
+// new Vue({
+// 	// 这里为全局监听socket事件消息，监听函数这里只写了一点，其实很有很多事件。
+// 	sockets: {
+// 		connecting() {
+// 			console.log('正在连接')
+// 		},
+// 		disconnect() {
+// 			console.log("Socket 断开");
+// 		},
+// 		connect_failed() {
+// 			cosnole.log('连接失败')
+// 		},
+// 		connect() {
+// 			console.log('socket connected')
+// 		}
+// 	},
+// 	// router,
+// 	// store,
+// 	render: h => h(App)
+// }).$mount('#app')
+
+
 _vue.default.config.productionTip = false;
 _App.default.mpType = 'app';
 var app = new _vue.default(_objectSpread({},
 _App.default));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 createApp(app).$mount();
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createApp"]))
@@ -158,6 +258,26 @@ var _default =
   },
   onShow: function onShow() {
     console.log('App Show');
+  },
+  created: function created() {
+    // uni.request({
+    // 	url: '/',
+    // 	method: 'GET',
+    // 	// data: options.data,
+    // 	header: {
+    // 		// "Authorization": token, //自定义请求头信息
+    // 		// 'Content-type': options.headers['Content-Type'] || 'application/x-www-form-urlencoded;charset=UTF-8'
+    // 	},
+    // 	success: (res) => {
+    // 		// const data = res.data
+    // 		console.log('response', res)
+    // 		return resolve(res.data)
+    // 	},
+    // 	fail: (fail) => {
+    // 		console.log('fail', fail)
+    // 		return reject(fail);
+    // 	}
+    // })
   },
   onHide: function onHide() {
     console.log('App Hide');

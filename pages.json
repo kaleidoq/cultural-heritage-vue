@@ -99,6 +99,7 @@
 		{ // 首页/发布
 			"path": "pages/home/release",
 			"style": {
+				// "navigationBarTitleText": "发布文章",
 				"navigationStyle": "custom" // 隐藏系统导航栏
 			}
 		},
@@ -107,7 +108,7 @@
 		{ // 首页/发布
 			"path": "pages/home/release",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "发布文章",
 				"app-plus": {
 					"titleNView": false // 禁用原生导航栏
 				}
@@ -396,7 +397,8 @@
 			"path": "pages/news/goods",
 			"style": {
 				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom" // 隐藏系统导航栏
 			}
 		}, {
 			"path": "pages/goods/goods_detail",
@@ -463,17 +465,22 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/home/release_good",
+			"style": {
+				"navigationBarTitleText": "发布商品",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/goods/goods-list",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
 		}
-	    ,{
-            "path" : "pages/home/release_good",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	],
 	// 全局样式
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -497,16 +504,16 @@
 				"selectedIconPath": "/static/img/tabbar/home-ed.png"
 			},
 			{
-				"pagePath": "pages/news/news",
-				"text": "关注动态",
+				"pagePath": "pages/news/goods",
+				"text": "随便看看",
 				"iconPath": "/static/img/tabbar/news.png",
 				"selectedIconPath": "/static/img/tabbar/news-ed.png"
 			},
 			{
-				"pagePath": "pages/home/switch_release",
-				"text": "发布",
-				"iconPath": "/static/img/tabbar/release.png",
-				"selectedIconPath": "/static/img/tabbar/release-ed.png"
+				"pagePath": "pages/news/news",
+				"text": "动态",
+				"iconPath": "/static/img/tabbar/discover.png",
+				"selectedIconPath": "/static/img/tabbar/discover-ed.png"
 			},
 			{
 				"pagePath": "pages/paper/paper",

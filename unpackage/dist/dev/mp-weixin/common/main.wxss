@@ -11665,8 +11665,8 @@ page {
   text-align: justify !important;
 }
 .line-1 {
-  overflow: hidden;
   white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
 }
 .line-2 {

@@ -107,3 +107,36 @@ export const queryOrder = () => {
 		method: 'GET'
 	})
 }
+
+
+/**
+ * 卖家发货
+ * @param(order_id)
+ * @returns(mes)
+ * @method(post)
+ */
+export const setDeliver = (id) => {
+	return request({
+		url: baseAPI + '/setDeliver',
+		method: 'POST',
+		data: {
+			order_id: id
+		}
+	})
+}
+
+/**
+ * 用户确认收货
+ * @param(order_id)
+ * @returns(mes)
+ * @method(post)
+ */
+export const setReceive = (id) => {
+	return request({
+		url: baseAPI + '/setReceive',
+		method: 'POST',
+		data: {
+			order_id: id
+		}
+	})
+}
