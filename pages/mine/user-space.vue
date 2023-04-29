@@ -148,7 +148,7 @@
 						scrollTop: 0,
 					},
 					{
-						name: "动态",
+						name: "商品",
 						loadStatus: 'loadmore',
 						scrollTops: 0,
 						scrollTop: 0,

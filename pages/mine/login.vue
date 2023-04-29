@@ -65,8 +65,8 @@
 				tips: '',
 				showEye: false,
 				form: {
-					username: 'admin',
-					password: '123456',
+					username: '',
+					password: '',
 					code: ''
 				},
 				btnStyle: {

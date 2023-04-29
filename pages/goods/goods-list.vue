@@ -9,16 +9,15 @@
 				<view class="flex mr-30" @click="toDetail(item.goods_id)">
 					<image :src="item.cover" mode="aspectFill" style="width: 250rpx;height: 180rpx;"></image>
 				</view>
-				<view class="flex flex-col w-full">
+				<view class="flex flex-col w-3-5">
 					<view @click="toDetail(item.goods_id)">
-						<view class="text-32 font-bold mt-20">
+						<view class="text-32 font-bold mt-20 line-1">
 							{{item.title}}
 						</view>
 						<view class="mt-20 line-1">
 							{{item.content}}
 						</view>
 					</view>
-
 					<view class="flex flex-row justify-between">
 						<view class="flex text-30 text-red my-20">
 							￥{{item.price}}
@@ -43,6 +42,11 @@
 					class="flex cu-tag line-gray">
 					<view class="cuIcon-message font-size-lg text-gray"></view>
 					联系买家
+				</navigator>
+				<navigator v-if="item.is_promote" :url="'/pages/order/order_detail?order_id='+item.order_id"
+					class="flex cu-tag line-gray">
+					<view class="cuIcon-message font-size-lg text-gray"></view>
+					查看订单
 				</navigator>
 				<view class="" v-if="item.status==0">
 					已被拍下，等待买家付款

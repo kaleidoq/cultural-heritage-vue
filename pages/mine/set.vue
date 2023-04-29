@@ -33,10 +33,10 @@
 						name: '账号与安全',
 						url: 'edit-pwd'
 					},
-					{
-						name: '绑定邮箱',
-						url: 'bind-email'
-					},
+					// {
+					// 	name: '绑定邮箱',
+					// 	url: 'bind-email'
+					// },
 					{
 						name: '修改资料',
 						url: 'edit-info'
@@ -110,7 +110,7 @@
 						const value = res.currentSize
 						const val = value > 1024 ? (value / 1024).toFixed(2) + 'MB' : value
 							.toFixed(2) + 'KB'
-						_this.$set(_this.setList[3],'value', val)
+						_this.$set(_this.setList[3], 'value', val)
 					}
 				})
 			}

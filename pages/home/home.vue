@@ -90,6 +90,7 @@
 			<!-- <u-icon color="#01906c" name="arrow-up" size="24"></u-icon> -->
 			<u-icon color="#01906c" name="plus" size="30"></u-icon>
 		</view>
+		<appeal :show='showReport'></appeal>
 	</view>
 </template>
 
@@ -160,7 +161,8 @@
 				swiperList: [null, null, null, null, null],
 				// swiperList: newsList
 				list: [],
-				needRefresh: false
+				needRefresh: false,
+				showReport: false,
 			}
 		},
 		onTabItemTap(e) {
@@ -359,7 +361,12 @@
 				})
 				this.getArticleCover() */
 			},
-			goRelease() {}
+			goRelease() {},
+			// 打开举报按钮
+			report(e) {
+				this.showReport = true
+				console.log(e)
+			}
 		}
 	}
 </script>

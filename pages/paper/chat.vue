@@ -84,7 +84,7 @@
 				// console.log(this.chatHistory)
 				// localStorage.setItem('chatHistory', JSON.stringify(this.chatHistory))
 				console.log('broadcast data ', data)
-				console.log('another', this.anothUser.user_id)
+				// console.log('another', this.anothUser.user_id)
 				if (data.another_id == this.mainUser.user_id) {
 					const obj = {
 						user_id: this.anothUser.user_id,

@@ -27,26 +27,26 @@
 		<!-- 列表内容 -->
 		<view v-if="tabIndex === 0">
 			<!-- <view class="p-30 border-b">
-					<view class="text-30 mb-20">
-						个人信息
-					</view>
-					<view class="text-28 my-10">
-						性别：<text class="text-gray-500">魔杰座</text>
-					</view>
-					<view class="text-28 my-10">
-						年龄：<text class="text-gray-500">UI设计</text>
-					</view>
-					<view class="text-28 my-10">
-						故乡：<text class="text-gray-500">中国</text>
-					</view>
-					<view class="text-28">
-						个人介绍：<text class="text-gray-500">未婚</text>
-					</view>
-					<view class="text-28">
-						简介：
-						<text class="text-gray-500">你的倒影是我带不走的风景，就像居无定所的云还在旅行！</text>
-					</view>
-				</view> -->
+				<view class="text-30 mb-20">
+					个人信息
+				</view>
+				<view class="text-28 my-10">
+					性别：<text class="text-gray-500">魔杰座</text>
+				</view>
+				<view class="text-28 my-10">
+					年龄：<text class="text-gray-500">UI设计</text>
+				</view>
+				<view class="text-28 my-10">
+					故乡：<text class="text-gray-500">中国</text>
+				</view>
+				<view class="text-28">
+					个人介绍：<text class="text-gray-500">未婚</text>
+				</view>
+				<view class="text-28">
+					简介：
+					<text class="text-gray-500">你的倒影是我带不走的风景，就像居无定所的云还在旅行！</text>
+				</view>
+			</view> -->
 		</view>
 		<scroll-view :scroll-top="tabList[tabIndex].scrollTops" class="w-full h-full" scroll-y
 			@scrolltolower="reachBottom" @scroll="scroll">
@@ -60,18 +60,20 @@
 				<!-- 列表 -->
 				<view class="flex flex-col w-full">
 					<!-- 帖子列表 -->
+
 					<info-list :item="item" v-for="(item,index) in list" :key="index" :index="index" :isUSer="false"
 						:isShowSpace="false">
 						<template #bottom>
-							<view class="flex justify-end mx-20" @click="delectArticle(item.article_id)">
-								删除
+							<view class="border-title">
+								<view class="flex justify-end mx-20" @click="delectArticle(item.article_id)">
+									删除
+								</view>
 							</view>
 						</template>
 					</info-list>
 					<u-loadmore :status="loadStatus"></u-loadmore>
 				</view>
 			</template>
-
 		</scroll-view>
 
 	</view>
@@ -110,7 +112,7 @@
 						scrollTop: 0,
 					},
 					{
-						name: "动态",
+						name: "商品",
 						loadStatus: 'loadmore',
 						scrollTops: 0,
 						scrollTop: 0,
@@ -200,6 +202,7 @@
 				this.$u.router('/pages/paper/chat&user_id=' + this.info.user_id)
 			},
 			async delectArticle(id) {
+
 				const {
 					data: res
 				} = await delectArticle(id)

@@ -82,6 +82,8 @@
 				<view class="cuIcon-comment mr-10 text-36"></view>
 				{{info.comment_count|fileThousand}}
 			</view>
+			<view class="cuIcon-moreandroid" @click="report">
+			</view>
 		</view>
 		<slot name="bottom"></slot>
 	</view>
@@ -137,7 +139,7 @@
 		data() {
 			return {
 				info: null,
-				tags: []
+				tags: [],
 			}
 		},
 		watch: {
@@ -151,7 +153,8 @@
 		},
 		methods: {
 			async init() {
-				this.tags = splitTag(this.info.tags)
+				if (this.info.tags != '')
+					this.tags = splitTag(this.info.tags)
 				// console.log(this.tags)
 			},
 			// 关注
@@ -196,6 +199,16 @@
 				}
 				if (value) this.info.collect_count++
 				else this.info.collect_count--
+			},
+			// 打开举报弹窗
+			report() {
+				// this.showAppeal = true
+				// console.log('this.info')
+				// console.log(this.info)
+				this.$emit('report', {
+					type: 'article',
+					article_id: this.info.article_id
+				})
 			},
 			// 分享
 			handleShare() {

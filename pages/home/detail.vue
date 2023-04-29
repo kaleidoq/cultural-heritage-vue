@@ -58,13 +58,6 @@
 						:key="index" :src="item" lazy-load>
 					</image>
 				</view>
-				<view>
-					<view v-if="info.cover_pic" class="relative flex flex-row justify-center items-center">
-						<!-- 图片 -->
-						<image class="w-full rounded-30 img-cover" mode="aspectFill" :src="info.cover_pic" lazy-load>
-						</image>
-					</view>
-				</view>
 			</view>
 			<!-- 标签 -->
 			<view v-if="info.tags" class="flex flex-row mt-20 flex-wrap items-center">
@@ -216,9 +209,10 @@
 				} = await getArticle({
 					article_id: article_id
 				})
-				if (res.image != null) {
-					res.images = res.image.split(",")
-				}
+				console.log(res)
+				// if (res.images != null) {
+				// 	res.images = res.image.split(",")
+				// }
 				if (res.goods_id != null) {
 					let {
 						data: good
@@ -228,7 +222,6 @@
 					this.goods.images = this.goods.images.split(',')
 					this.goods.pic = this.goods.images[0]
 				}
-
 				console.log(res)
 				this.info = {
 					...res,

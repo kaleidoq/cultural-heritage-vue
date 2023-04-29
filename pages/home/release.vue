@@ -47,13 +47,12 @@
 				</view>
 			</view>
 			<view class="cu-form-group">
-				<view class="grid col-4 grid-square flex-sub">
-					<u-upload ref="upload" :fileList="imgList" @afterRead="handUpload" @delete="deletePic" name="1"
-						multiple :maxCount="9" previewFullImage>
-					</u-upload>
-
-				</view>
+				<!-- <view class="grid col-4 grid-square flex-sub"> -->
+				<u-upload ref="upload" :fileList="imgList" @afterRead="handUpload" @delete="deletePic" name="1" multiple
+					:maxCount="9" previewFullImage>
+				</u-upload>
 			</view>
+			<!-- </view> -->
 			<!-- end -->
 
 			<!-- 选择分类  -->
@@ -171,8 +170,8 @@
 				form: {
 					title: 'Ceshi ',
 					content: 'scascascasc',
-					images: null,
-					cover_pic: null,
+					images: '',
+					cover_pic: '',
 					class_id: -1,
 					tags: null
 				},
@@ -233,38 +232,38 @@
 				// this.$refs.cityPicker
 				// this.form.address = e.label
 			},
-			// onBackPress() {
-			// 	if (this.$refs.cityPicker.showPicker) {
-			// 		this.$refs.cityPicker.pickerCancel();
-			// 		return true;
-			// 	}
-			// },
-			// // 选择器改变时
-			// changePicker(e) {
-			// 	console.log(e)
-			// 	const {
-			// 		columnIndex,
-			// 		// value,
-			// 		// values, // values为当前变化列的数组内容
-			// 		index,
-			// 		// 微信小程序无法将picker实例传出来，只能通过ref操作
-			// 		picker = this.$refs.uPicker
-			// 	} = e
-			// 	// 当第一列值发生变化时，变化第二列(后一列)对应的选项
-			// 	if (columnIndex === 0) {
-			// 		// picker为选择器this实例，变化第二列对应的选项
-			// 		console.log(e)
-			// 		console.log(this.columns)
-			// 		picker.setColumnValues(1, this.columns[0][index].children)
-			// 	}
-			// },
-			// // 回调参数为包含columnIndex、value、values
-			// confirmPicker(e) {
-			// 	console.log('confirm', e)
-			// 	this.form.class_id = e.value[1].class_id
-			// 	this.classify = e.value[0].class_name + '   ' + e.value[1].class_name
-			// 	this.showPicker = false
-			// },
+			/* onBackPress() {
+				if (this.$refs.cityPicker.showPicker) {
+					this.$refs.cityPicker.pickerCancel();
+					return true;
+				}
+			},
+			// 选择器改变时
+			changePicker(e) {
+				console.log(e)
+				const {
+					columnIndex,
+					// value,
+					// values, // values为当前变化列的数组内容
+					index,
+					// 微信小程序无法将picker实例传出来，只能通过ref操作
+					picker = this.$refs.uPicker
+				} = e
+				// 当第一列值发生变化时，变化第二列(后一列)对应的选项
+				if (columnIndex === 0) {
+					// picker为选择器this实例，变化第二列对应的选项
+					console.log(e)
+					console.log(this.columns)
+					picker.setColumnValues(1, this.columns[0][index].children)
+				}
+			},
+			// 回调参数为包含columnIndex、value、values
+			confirmPicker(e) {
+				console.log('confirm', e)
+				this.form.class_id = e.value[1].class_id
+				this.classify = e.value[0].class_name + '   ' + e.value[1].class_name
+				this.showPicker = false
+			}, */
 			confirmClassify(e) {
 				this.form.class_id = e
 			},
@@ -329,13 +328,13 @@
 						icon: 'none'
 					})
 					return
+				} else if (this.form.class_id == -1) {
+					uni.showToast({
+						title: '请选择分类噢',
+						icon: 'none'
+					})
+					return
 				}
-				// else if(this.form.class_id==-1){
-				// 	uni.showToast({
-				// 		title: '不选择分类的话会',
-				// 		icon: 'none'
-				// 	})
-				// }
 				this.draftShow = false
 				console.log(this.form)
 				// 提交到后台

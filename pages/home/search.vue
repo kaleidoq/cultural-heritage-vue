@@ -40,41 +40,44 @@
 			</view>
 		</template>
 		<!-- 分段器，选择搜索的方向 -->
-		<template v-else>
+		<template v-if="showHistory==false">
 			<!-- <u-subsection :list="indexList" :current="tabIndex" @change="sectionChange"></u-subsection> -->
 			<u-tabs :list="indexList" @click="sectionChange"></u-tabs>
-		</template>
-		<!-- 无内容 -->
-		<template
-			v-if="tabIndex === 0 && list.info.length==0 || tabIndex === 1 && list.user.length==0 || tabIndex === 2 && list.tags.length==0">
-			<u-empty text="本来无一物,何处惹尘埃" icon="/static/img/demo/winter.svg" textSize="16" marginTop='25%' mode="list">
-			</u-empty>
-		</template>
-		<!-- 资讯列表 -->
-		<template v-if="tabIndex === 0">
-			<info-list :item="item" v-for="(item,index) in list.info" :key="index">
-			</info-list>
-		</template>
-		<!-- 用户列表 -->
-		<template v-else-if="tabIndex === 1">
-			<friend-list :item="item" v-for="(item,index) in list.user" :key="index">
-			</friend-list>
-		</template>
-		<!-- 话题列表 -->
-		<template v-else-if="tabIndex === 2">
-			<info-list :item="item" v-for="(item,index) in list.tags" :key="index">
-			</info-list>
-		</template>
-		<!-- 商品列表 -->
-		<template v-else-if="tabIndex === 3">
-			<u-waterfall class="flex fall-content" v-model="list.goods" ref="uWaterfall">
-				<template v-slot:left="{leftList}">
-					<water-list :list="leftList"></water-list>
-				</template>
-				<template v-slot:right="{rightList}">
-					<water-list :list="rightList"></water-list>
-				</template>
-			</u-waterfall>
+
+			<!-- 无内容 -->
+			<template
+				v-if="tabIndex === 0 && list.info.length==0 || tabIndex === 1 && list.user.length==0 || tabIndex === 2 && list.tags.length==0">
+				<u-empty text="本来无一物,何处惹尘埃" icon="/static/img/demo/winter.svg" textSize="16" marginTop='25%'
+					mode="list">
+				</u-empty>
+			</template>
+			<!-- 资讯列表 -->
+			<template v-if="tabIndex === 0">
+				<info-list :item="item" v-for="(item,index) in list.info" :key="index">
+				</info-list>
+			</template>
+			<!-- 用户列表 -->
+			<template v-else-if="tabIndex === 1">
+				<friend-list :item="item" v-for="(item,index) in list.user" :key="index">
+				</friend-list>
+			</template>
+			<!-- 话题列表 -->
+			<template v-else-if="tabIndex === 2">
+				<info-list :item="item" v-for="(item,index) in list.tags" :key="index">
+				</info-list>
+			</template>
+			<!-- 商品列表 -->
+			<template v-else-if="tabIndex === 3">
+				<u-waterfall class="flex fall-content" v-model="list.goods" ref="uWaterfall">
+					<template v-slot:left="{leftList}">
+						<water-list :list="leftList"></water-list>
+					</template>
+					<template v-slot:right="{rightList}">
+						<water-list :list="rightList"></water-list>
+					</template>
+				</u-waterfall>
+
+			</template>
 		</template>
 		<u-toast ref="uToast"></u-toast>
 	</view>
@@ -167,7 +170,13 @@
 			},
 			// 搜索
 			search() {
-				this.showHistory = false
+				this.list = {
+						info: [],
+						user: [],
+						tags: [],
+						goods: []
+					},
+					this.showHistory = false
 				this.keyword = this.keyword.trim()
 				// 数据校验
 				if (this.keyword === '') {
@@ -190,8 +199,8 @@
 					this.getInfo()
 					// 		break
 					// 	case 1:
-					this.getUser()
-					this.getTags()
+					// this.getUser()
+					// this.getTags()
 					// 		break
 					// 	case 'topic':
 					// 		break
